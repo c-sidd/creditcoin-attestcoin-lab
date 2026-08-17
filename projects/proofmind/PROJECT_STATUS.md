@@ -1,45 +1,65 @@
 # ProofMind — Project Status
 
 ## Purpose
-This file is the operational status board for the ProofMind build. Documentation status and implementation status are intentionally separate.
+This is the operational status board for ProofMind. Documentation, implementation, and evidence are intentionally tracked separately.
 
 ## Current state
 
-- Documentation foundation: **complete as an engineering specification; audit expanded on 2026-08-18**.
+- Documentation foundation: **complete**.
+- Antigravity prompt-chain control plane: **complete** under `prompts/`.
+- Evidence framework/templates: **complete** under `evidence/`.
 - Creditcoin/Attestcoin learning material: present in the parent lab repository.
-- Existing tutorial/reference implementation: preserved under `examples/`.
-- ProofMind implementation: **not yet declared end-to-end complete**.
-- Testnet proof of the complete Sepolia → Attestcoin → AI → Creditcoin execution path: **pending until actually demonstrated**.
+- Existing tutorial/reference implementation: preserved under `examples/usc-testnet-bridge-examples` as a reference submodule.
+- ProofMind implementation: **in progress / not yet end-to-end complete**.
+- Complete Sepolia → Attestcoin → AI → Creditcoin testnet execution: **not yet proven by committed evidence**.
 
 ## Source-of-truth hierarchy
 
 1. Official Creditcoin documentation supplied/linked in this repository for protocol facts.
-2. Existing Creditcoin tutorial/reference code for concrete SDK, ABI and API behavior.
+2. Existing Creditcoin tutorial/reference implementation for concrete SDK, ABI and API behavior.
 3. ProofMind documents for project-specific architecture and product decisions.
 4. Code and tests as the executable implementation of those decisions.
 
-If these disagree, do not silently guess. Stop at the boundary, inspect the reference implementation, and record a decision.
+If these disagree, do not silently guess. Stop at the boundary, inspect the reference implementation, and record a decision in `DECISIONS.md`.
 
-## Documentation audit
+## Implementation gates
 
-The deep engineering reference now includes dedicated guidance for product requirements, architecture/trust, protocol boundaries, AI architecture and safety, contracts, worker/backend/frontend design, security, testing, infrastructure and development workflow. See `docs/32-completeness-audit.md` for the audit scope.
+Every milestone requires all four:
+
+1. implementation exists;
+2. automated tests pass;
+3. documentation/status is updated;
+4. evidence exists when the milestone requires runtime/deployment proof.
+
+Mocks may prove isolated component behavior but cannot satisfy a real protocol/testnet gate.
 
 ## Milestone status
 
-| Milestone | Status | Evidence required |
+| Milestone | Status | Completion evidence |
 |---|---|---|
-| Repository reconnaissance | Complete for planning | Repository/reference inspection notes |
+| Repository reconnaissance | Complete for planning | Repository/reference inspection |
 | Documentation specification | Complete | `docs/32-completeness-audit.md` |
-| Source event contract | Planned | Deployment + event tx |
-| Creditcoin ASC integration | Planned | Verified test transaction |
-| Business/decision contract | Planned | Contract tests |
-| Readability worker | Planned | Persistent state + retry tests |
-| AI decision service | Planned | Schema validation + mock/provider tests |
-| Evidence backend | Planned | API + database tests |
-| Dashboard | Planned | End-to-end evidence view |
-| Testnet E2E | Planned | Sepolia and CC3 transaction hashes |
-| Hardening | Planned | Negative-test matrix |
+| Antigravity prompt chain | Complete | `prompts/00-README.md` + prompts 01–20 |
+| Evidence framework | Complete | `evidence/README.md` + E2E template |
+| Source event contract | Not implemented | Sepolia deployment + event tx required |
+| Creditcoin ASC integration | Not implemented | Verified Creditcoin test transaction required |
+| Business/decision contract | Not implemented | Contract tests + deployment evidence required |
+| Readability worker | Not implemented | Persistent state/retry tests required |
+| Proof Builder integration | Not implemented | Real request/response evidence required |
+| AI decision service | Not implemented | Schema/model tests required |
+| Evidence backend | Not implemented | API/database tests required |
+| Dashboard | Not implemented | End-to-end evidence view required |
+| Local integration | Not implemented | Full integration test required |
+| CC3 testnet E2E | Not implemented | Sepolia + CC3 transaction hashes required |
+| Security hardening | Not implemented | Negative-test matrix required |
+| Reliability/observability | Not implemented | Failure injection/recovery evidence required |
+| Ideathon demo | Not implemented | Rehearsed real/recorded evidence flow required |
+| Final audit/release freeze | Not implemented | Final audit PASS + reproducible release required |
+
+## Current implementation blocker
+
+The remaining implementation cannot honestly be marked complete from documentation alone. It requires actual code execution, dependency installation, wallet-funded testnet transactions, and verification against the real Attestcoin interfaces. Those runtime results must be generated by the implementation environment and captured under `evidence/`.
 
 ## Completion rule
 
-Do not mark a milestone complete because code exists. Mark it complete only when its documented acceptance criteria and evidence are satisfied.
+Never mark a milestone complete because code exists or because an AI agent claims success. Mark it complete only when its documented acceptance criteria, executed tests, and required runtime evidence are present.
