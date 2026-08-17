@@ -9,20 +9,38 @@ This is the operational status board for ProofMind. Documentation, implementatio
 - Antigravity prompt-chain control plane: **complete** under `prompts/`.
 - Evidence framework/templates: **complete** under `evidence/`.
 - Implementation rules: **complete** under `IMPLEMENTATION_RULES.md`.
-- Pre-implementation verification checklist: **added; currently NOT PASSED** under `PRE_IMPLEMENTATION_GATE.md`.
-- Creditcoin/Attestcoin learning material: present in the parent lab repository.
+- Creditcoin/Attestcoin protocol interface verification: **complete for Milestone 1 planning**; see `docs/33-protocol-interface-verification-2026-08-18.md`.
+- Developer-machine live RPC/Proof Builder health check: **pending** because the current analysis runtime cannot perform outbound RPC POST/DNS requests.
 - Existing tutorial/reference implementation: preserved under `examples/usc-testnet-bridge-examples` as a reference submodule.
 - ProofMind implementation: **not yet started for the new implementation phase**.
 - Complete Sepolia → Attestcoin → AI → Creditcoin testnet execution: **not yet proven by committed evidence**.
 
 ## Source-of-truth hierarchy
 
-1. Official Creditcoin documentation supplied/linked in this repository for protocol facts.
-2. Existing Creditcoin tutorial/reference implementation for concrete SDK, ABI and API behavior.
-3. ProofMind documents for project-specific architecture and product decisions.
-4. Code and tests as the executable implementation of those decisions.
+1. Official Creditcoin documentation and current published protocol references.
+2. Existing official Creditcoin tutorial/reference implementation.
+3. Current `@gluwa/usc-sdk` package and its documented interfaces.
+4. ProofMind documents for project-specific architecture and product decisions.
+5. Code and tests as the executable implementation of those decisions.
 
-If these disagree, do not silently guess. Stop at the boundary, inspect the reference implementation, and record a decision in `DECISIONS.md`.
+If these disagree, do not silently guess. Stop at the boundary, inspect the current reference, and record a decision in `DECISIONS.md`.
+
+## Verified Milestone-1 protocol boundary
+
+```text
+Source chain: Ethereum Sepolia
+Source chain key on CC3 Testnet: 1
+Source EVM chain ID: 11155111
+Execution chain: Creditcoin CC3 Testnet
+Creditcoin EVM chain ID: 102031
+Creditcoin RPC: https://rpc.cc3-testnet.creditcoin.network
+Proof Builder: https://prover.cc3-testnet.creditcoin.network
+Native verifier / BlockProver: 0x0000000000000000000000000000000000000FD2
+ChainInfo precompile: 0x0000000000000000000000000000000000000FD3
+SDK: @gluwa/usc-sdk 0.18.0
+```
+
+Important: the Sepolia source-chain key is **1** for the current CC3 Testnet reference flow. Do not confuse it with Ethereum's EVM chain ID `11155111`.
 
 ## Implementation gates
 
@@ -35,14 +53,6 @@ Every milestone requires all four:
 
 Mocks may prove isolated component behavior but cannot satisfy a real protocol/testnet gate.
 
-## Pre-implementation gate
-
-Before Antigravity begins implementation, `PRE_IMPLEMENTATION_GATE.md` must be reviewed.
-
-The gate is **NOT PASSED** until all protocol-specific facts required by the first implementation milestone have been re-verified against the current official Creditcoin documentation and preserved reference implementation.
-
-In particular, do not begin protocol integration while the exact Proof Builder contract, verifier/precompile interface, SDK usage, or current testnet configuration remains uncertain.
-
 ## Milestone status
 
 | Milestone | Status | Completion evidence |
@@ -50,8 +60,9 @@ In particular, do not begin protocol integration while the exact Proof Builder c
 | Repository reconnaissance | Complete for planning | Repository/reference inspection |
 | Documentation specification | Complete | `docs/32-completeness-audit.md` |
 | Implementation rules | Complete | `IMPLEMENTATION_RULES.md` |
-| Pre-implementation gate | Not passed | `PRE_IMPLEMENTATION_GATE.md` |
-| Antigravity prompt chain | Complete | `prompts/00-README.md` + prompts 01–20 |
+| Protocol interface verification | Complete for planning | `docs/33-protocol-interface-verification-2026-08-18.md` |
+| Developer-machine RPC/Proof Builder health check | Pending | Runtime command output required |
+| Antigravity prompt chain | Complete | `prompts/00-README.md` + prompt chain |
 | Evidence framework | Complete | `evidence/README.md` + E2E template |
 | Source event contract | Not implemented | Sepolia deployment + event tx required |
 | Creditcoin ASC integration | Not implemented | Verified Creditcoin test transaction required |
@@ -70,7 +81,9 @@ In particular, do not begin protocol integration while the exact Proof Builder c
 
 ## Current implementation blocker
 
-The remaining implementation cannot honestly be marked complete from documentation alone. It requires actual code execution, dependency installation, wallet-funded testnet transactions, and verification against the real Attestcoin interfaces. Those runtime results must be generated by the implementation environment and captured under `evidence/`.
+The protocol-specific planning boundary is no longer blocked by unknown endpoint, chain-key, SDK, or precompile information.
+
+The next runtime gate is to execute the public CC3 Testnet RPC health/chain-ID check and Proof Builder health check from the developer machine, then proceed to implementation. The exact commands and expected results are recorded in `docs/33-protocol-interface-verification-2026-08-18.md`.
 
 ## Completion rule
 
