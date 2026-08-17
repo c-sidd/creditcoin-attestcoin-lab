@@ -4,6 +4,8 @@ This directory is the implementation specification for ProofMind. It is intentio
 
 ## Reading order
 
+Use the numbered curriculum first, then consult the deep engineering reference before implementing each subsystem.
+
 | # | Document | Purpose |
 |---|---|---|
 | 01 | [Idea](01-idea.md) | Product concept and thesis |
@@ -37,62 +39,50 @@ This directory is the implementation specification for ProofMind. It is intentio
 | 29 | [Testing Strategy](29-testing-strategy.md) | Unit, integration and end-to-end testing |
 | 30 | [Antigravity Milestone Prompts](30-antigravity-milestone-prompts.md) | Small prompts for each implementation milestone |
 | 31 | [Demo & Judge Checklist](31-demo-and-judge-checklist.md) | Final demo readiness and judge questions |
+| 32 | [Completeness Audit](32-completeness-audit.md) | What was missing and what was added |
 
 ## Deep engineering reference
 
-These folders are the project's detailed engineering memory. Each contains a focused guide and can be expanded with implementation-specific documents as the codebase grows.
-
-- [`00-project-context/`](00-project-context/) — canonical overview, goals, non-goals and terminology
-- [`01-product/`](01-product/) — product requirements, personas, stories, use cases and pitch
-- [`02-architecture/`](02-architecture/) — component architecture, trust model and system boundaries
-- [`03-creditcoin/`](03-creditcoin/) — protocol source-of-truth and Attestcoin reference material
-- [`04-ai/`](04-ai/) — AI agent, decision engine, verified-data boundary and provider interface
+- [`00-project-context/`](00-project-context/) — [goals](00-project-context/goals.md), [non-goals](00-project-context/non-goals.md), [terminology](00-project-context/terminology.md) and canonical context
+- [`01-product/`](01-product/) — [requirements](01-product/product-requirements.md), [personas](01-product/user-personas.md), [stories](01-product/user-stories.md), use cases and pitch
+- [`02-architecture/`](02-architecture/) — [component architecture](02-architecture/component-architecture.md), [sequence flows](02-architecture/sequence-flows.md), [trust model](02-architecture/trust-model.md), [technology stack](02-architecture/technology-stack.md)
+- [`03-creditcoin/`](03-creditcoin/) — protocol source-of-truth plus [environments](03-creditcoin/environments.md), [source contract](03-creditcoin/source-chain-contract.md), [ASC](03-creditcoin/attestcoin-contract.md), [business logic](03-creditcoin/business-logic-contract.md), [Proof Builder](03-creditcoin/proof-builder.md), [SDK](03-creditcoin/sdk.md)
+- [`04-ai/`](04-ai/) — [agent](04-ai/ai-agent.md), [architecture](04-ai/agent-architecture.md), [verified-data pipeline](04-ai/verified-data-pipeline.md), [tools](04-ai/tool-calling.md), [transaction intent](04-ai/transaction-intent.md), [risk controls](04-ai/risk-controls.md), [blockchain flow](04-ai/ai-to-blockchain-flow.md)
 - [`05-smart-contracts/`](05-smart-contracts/) — contract responsibilities, events, access control and replay protection
 - [`06-worker/`](06-worker/) — event monitoring, attestation waiting, proof generation, retries and state
-- [`07-backend/`](07-backend/) — persistence, services and API contracts
-- [`08-frontend/`](08-frontend/) — dashboard screens and evidence presentation
-- [`09-security/`](09-security/) — threat model and security controls
-- [`10-testing/`](10-testing/) — test layers and failure matrix
-- [`11-infrastructure/`](11-infrastructure/) — local/testnet configuration and deployment concerns
-- [`12-development/`](12-development/) — implementation workflow, coding conventions and definition of done
+- [`07-backend/`](07-backend/) — [database schema](07-backend/database-schema.md), [services](07-backend/services.md), [jobs](07-backend/jobs.md), [errors](07-backend/error-handling.md) and API contracts
+- [`08-frontend/`](08-frontend/) — [pages](08-frontend/pages.md), [dashboard](08-frontend/dashboard.md), [agent interface](08-frontend/agent-interface.md), [transaction history](08-frontend/transaction-history.md)
+- [`09-security/`](09-security/) — [smart-contract](09-security/smart-contract-security.md), [AI](09-security/ai-security.md), [worker](09-security/oracle-security.md), [replay](09-security/replay-attacks.md), [secrets](09-security/secrets-management.md)
+- [`10-testing/`](10-testing/) — [contract](10-testing/contract-tests.md), [worker](10-testing/worker-tests.md), [integration](10-testing/integration-tests.md), [AI](10-testing/ai-tests.md), [E2E](10-testing/end-to-end-tests.md)
+- [`11-infrastructure/`](11-infrastructure/) — [local](11-infrastructure/local-development.md), [environment variables](11-infrastructure/environment-variables.md), [deployment](11-infrastructure/deployment.md), [monitoring](11-infrastructure/monitoring.md)
+- [`12-development/`](12-development/) — [conventions](12-development/coding-conventions.md), [Git workflow](12-development/git-workflow.md), [definition of done](12-development/definition-of-done.md), [troubleshooting](12-development/troubleshooting.md)
 - [`../diagrams/`](../diagrams/) — architecture and sequence diagram source files
-
-## Implementation order
-
-1. Read 01–05 to understand the product and freeze the MVP.
-2. Read `00-project-context/`, `01-product/` and `02-architecture/` for the durable project context.
-3. Read 06–08 and `03-creditcoin/` to freeze the Creditcoin/Attestcoin architecture and trust boundaries.
-4. Read 10–11 and `05-smart-contracts/` before implementing contracts or changing event/data schemas.
-5. Read 12 and `06-worker/` before implementing the worker state machine and persistence.
-6. Read 09 and `04-ai/` before implementing the AI provider boundary.
-7. Read 17 before implementing any AI-triggered on-chain action.
-8. Read 13, 18, 27 and `07-backend/`/`08-frontend/` before implementing evidence persistence, APIs and dashboard views.
-9. Read 14, 16 and `09-security/`/`10-testing/` continuously while testing and hardening.
-10. Use 24 and 30 to execute implementation milestone by milestone.
-11. Use 19 and 31 when preparing the live ideathon demonstration.
-12. Use 22 as the final master instruction for Antigravity after it has inspected the repository and reference implementation.
 
 ## Source-of-truth rule
 
+Three information classes must stay separate:
+
+1. **Creditcoin/Attestcoin facts** — supported by official docs and the preserved reference implementation.
+2. **ProofMind project design** — application architecture, AI policy, UI, database and product decisions.
+3. **Implementation notes** — concrete files, commands, APIs and code instructions.
+
 If implementation conflicts with these documents, stop and resolve the conflict before coding. Record the decision in `../DECISIONS.md`.
 
-If a protocol-specific detail conflicts with an existing Creditcoin/Attestcoin tutorial or official documentation, do not invent a replacement. Inspect the reference implementation, verify the documented interface, and record the resulting decision.
+If a protocol-specific detail conflicts with official Creditcoin documentation or the reference implementation, do not invent a replacement. Verify the documented interface and record the resulting decision.
 
-## Current implementation status
+## Implementation status
 
 ### Documentation
 
-- [x] Product concept and MVP defined
-- [x] Architecture and trust boundaries documented
-- [x] Attestcoin readability flow documented
-- [x] AI safety boundary documented
-- [x] Smart-contract responsibilities documented
-- [x] Worker lifecycle documented
-- [x] API/data contracts documented
-- [x] Test strategy documented
-- [x] Antigravity master and milestone prompts documented
-- [x] Demo/judge checklist documented
-- [x] Deep engineering reference tree added
+- [x] Product, architecture and protocol context
+- [x] AI, contract and worker specifications
+- [x] Backend/frontend specifications
+- [x] Security and testing specifications
+- [x] Infrastructure/deployment specifications
+- [x] Antigravity master and milestone prompts
+- [x] Demo/judge material
+- [x] Deep engineering reference tree
+- [x] Completeness audit and missing reference pages
 
 ### Implementation
 
@@ -105,4 +95,4 @@ If a protocol-specific detail conflicts with an existing Creditcoin/Attestcoin t
 - [ ] Dashboard implemented
 - [ ] End-to-end CC3 Testnet flow demonstrated
 
-The checkboxes deliberately distinguish **documentation completeness** from **implementation completeness**. A documented feature must not be presented as implemented until its corresponding tests and deployment evidence exist.
+Documentation completeness is **not** implementation completeness. A feature is not complete until its acceptance criteria and evidence exist.
