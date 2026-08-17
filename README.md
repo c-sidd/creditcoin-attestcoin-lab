@@ -1,8 +1,20 @@
 # Creditcoin + Attestcoin Lab
 
-Research, notes, architecture, and implementation planning for building on Creditcoin and the Attestcoin Protocol.
+Research, protocol notes, architecture, and implementation work for building on Creditcoin and the Attestcoin Protocol.
 
-## Documentation
+## Repository Structure
+
+```text
+creditcoin-attestcoin-lab/
+├── docs/                         # Creditcoin + Attestcoin learning notes
+└── projects/
+    └── proofmind/                # Hackathon project: verified cross-chain AI
+        ├── README.md
+        ├── DECISIONS.md
+        └── docs/                 # Complete product, protocol, engineering and demo specification
+```
+
+## Learning Documentation
 
 - [Hackathon Rules & Requirements](docs/00-hackathon-rules.md)
 - [Creditcoin Fundamentals](docs/01-creditcoin-fundamentals.md)
@@ -13,10 +25,18 @@ Research, notes, architecture, and implementation planning for building on Credi
 - [Transaction Proving](docs/06-transaction-proving.md)
 - [Project-Relevant Takeaways](docs/07-project-takeaways.md)
 
-## Current Goal
+## Active Project
 
-Understand Creditcoin and Attestcoin deeply before selecting and implementing the hackathon project. These notes intentionally separate **what the protocol does**, **what a builder must implement**, and **what can become a project feature**.
+### ProofMind — Verified Cross-Chain AI Decision Engine
 
-## Key Principle
+ProofMind is the implementation project in this repository. It is designed around the Attestcoin Protocol Readability flow: a source-chain event is detected, attested, proven with Merkle + continuity proofs, verified by an Attestcoin Smart Contract on Creditcoin, and then consumed by an AI decision layer that can trigger bounded on-chain business logic.
 
-The strongest hackathon integrations should make Attestcoin a **core part of the application logic**, not merely a decorative cross-chain call. A project should demonstrate that verified cross-chain data or messages directly change application state or trigger meaningful actions on Creditcoin.
+The complete specification lives in [`projects/proofmind/`](projects/proofmind/), with an index at [`projects/proofmind/docs/00-INDEX.md`](projects/proofmind/docs/00-INDEX.md).
+
+## Development Principle
+
+The project documentation is intentionally detailed enough to support AI-assisted/vibe coding. Before implementing a feature, consult the relevant document, preserve the interfaces and event names defined there, and update `DECISIONS.md` when an architectural choice changes.
+
+## Protocol Principle
+
+The strongest Attestcoin integration is one where verified cross-chain data is a real input to application state or execution—not merely a decorative oracle call.
