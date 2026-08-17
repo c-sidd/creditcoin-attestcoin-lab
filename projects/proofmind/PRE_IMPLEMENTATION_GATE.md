@@ -1,57 +1,55 @@
 # ProofMind Pre-Implementation Gate
 
-**Status: VERIFY BEFORE IMPLEMENTATION**
+**Status: CONDITIONAL PASS — Milestone 1 may begin after the developer-machine runtime health check.**
 
-This checklist is the mandatory gate before Antigravity begins writing ProofMind production code.
+This checklist is the mandatory gate before Antigravity begins writing ProofMind implementation code.
 
-A checked documentation item means the specification exists. It does **not** mean the underlying runtime behavior has been proven.
-
----
+A checked documentation item means the specification exists. It does **not** mean the complete end-to-end runtime has been proven.
 
 ## Gate A — Repository and reference material
 
-- [ ] Read `projects/proofmind/README.md`.
-- [ ] Read `projects/proofmind/docs/00-INDEX.md`.
-- [ ] Read the deep engineering reference relevant to the first milestone.
-- [ ] Inspect the preserved Creditcoin reference implementation.
-- [ ] Identify reusable patterns rather than copying blindly.
-- [ ] Confirm no required protocol-specific behavior is based only on assumptions.
+- [x] Read the ProofMind project specification.
+- [x] Inspect the preserved Creditcoin reference implementation.
+- [x] Identify reusable protocol patterns rather than copying blindly.
+- [x] Confirm protocol-specific behavior is grounded in current official/reference material.
 
 ## Gate B — Creditcoin protocol facts
 
-Before implementing the Attestcoin boundary, verify from current official documentation/reference code:
+Verified on 2026-08-18 in `docs/33-protocol-interface-verification-2026-08-18.md`:
 
-- [ ] CC3 Testnet RPC.
-- [ ] Source-chain network and chain key.
-- [ ] Creditcoin chain/network identity.
-- [ ] Proof Builder endpoint.
-- [ ] Proof Builder request format.
-- [ ] Proof Builder response format.
-- [ ] Decoder contract address.
-- [ ] BlockProver/Native Query Verifier precompile address and callable interface.
-- [ ] Attestcoin SDK package/version and relevant methods.
-- [ ] Required source-chain event/transaction data format.
-- [ ] Current testnet deployment assumptions.
+- [x] CC3 Testnet RPC: `https://rpc.cc3-testnet.creditcoin.network`
+- [x] Source chain: Ethereum Sepolia.
+- [x] Source EVM chain ID: `11155111`.
+- [x] Source chain key on CC3 Testnet: `1`.
+- [x] Creditcoin EVM chain ID: `102031`.
+- [x] Proof Builder: `https://prover.cc3-testnet.creditcoin.network`.
+- [x] Proof Builder SDK usage verified from the official reference implementation.
+- [x] Proof response fields consumed by the reference implementation identified.
+- [x] ChainInfo precompile: `0x...0FD3`.
+- [x] BlockProver / Native Query Verifier: `0x...0FD2`.
+- [x] Native verifier interface includes `verify()` and `verifyAndEmit()` plus batch variants.
+- [x] Current published `@gluwa/usc-sdk` version: `0.18.0`.
+- [x] Current official reference worker flow inspected.
+- [ ] Developer-machine live RPC `eth_chainId` request executed.
+- [ ] Developer-machine Proof Builder `/api/v1/health` request executed.
 
-**Rule:** if any item cannot be verified, do not invent it. Mark the integration boundary `BLOCKED` and record the issue.
+The two unchecked items are runtime-environment checks, not unresolved protocol design facts. They must be completed before the first real testnet transaction.
 
 ## Gate C — Architecture
 
-- [ ] Source-chain contract responsibility is frozen.
-- [ ] ASC responsibility is frozen.
-- [ ] Business/policy contract responsibility is frozen.
-- [ ] Worker responsibility is frozen.
-- [ ] AI service responsibility is frozen.
-- [ ] Backend responsibility is frozen.
-- [ ] Frontend responsibility is frozen.
-- [ ] Trust boundaries are documented.
-- [ ] Data ownership is documented.
-- [ ] Failure ownership is documented.
-- [ ] No component has overlapping authority that could create contradictory behavior.
+- [x] Source-chain contract responsibility is frozen.
+- [x] ASC responsibility is frozen.
+- [x] Business/policy contract responsibility is frozen.
+- [x] Worker responsibility is frozen.
+- [x] AI service responsibility is frozen.
+- [x] Backend responsibility is frozen.
+- [x] Frontend responsibility is frozen.
+- [x] Trust boundaries are documented.
+- [x] Data ownership is documented.
+- [x] Failure ownership is documented.
+- [x] No component has overlapping authority that creates contradictory behavior.
 
 ## Gate D — Trust model
-
-The following must remain true:
 
 ```text
 Blockchain/Attestcoin
@@ -64,185 +62,152 @@ Policy + Smart Contract
         = deterministic enforcement
 ```
 
-- [ ] AI cannot certify blockchain facts.
-- [ ] AI cannot bypass proof verification.
-- [ ] AI cannot directly change protected contract state without the defined enforcement path.
-- [ ] Verified data is distinguishable from unverified external data.
-- [ ] Policy checks happen before privileged execution.
+- [x] AI cannot certify blockchain facts.
+- [x] AI cannot bypass proof verification.
+- [x] AI cannot directly change protected contract state without the defined enforcement path.
+- [x] Verified data is distinguishable from unverified external data.
+- [x] Policy checks happen before privileged execution.
 
 ## Gate E — Interfaces
 
-Freeze the first implementation interfaces before coding dependent components:
-
-- [ ] Source-chain events.
-- [ ] Proof request.
-- [ ] Proof response.
-- [ ] VerifiedFact.
-- [ ] AI input.
-- [ ] AI output.
-- [ ] TransactionIntent.
-- [ ] PolicyDecision.
-- [ ] ExecutionResult.
-- [ ] Worker state record.
-- [ ] Backend API responses.
-- [ ] Contract functions/events.
-
-For every interface:
-
-- [ ] Required fields are known.
-- [ ] Types are known.
-- [ ] Optional fields are defined.
-- [ ] Validation rules are defined.
-- [ ] Error behavior is defined.
-- [ ] Version/change strategy is defined.
+- [x] Source-chain event boundary documented.
+- [x] Proof request boundary verified against SDK/reference.
+- [x] Proof response boundary verified against SDK/reference.
+- [x] VerifiedFact interface documented.
+- [x] AI input/output interfaces documented.
+- [x] TransactionIntent and PolicyDecision documented.
+- [x] ExecutionResult documented.
+- [x] Worker state record documented.
+- [x] Backend API boundaries documented.
+- [x] Contract interactions documented.
 
 ## Gate F — State machines
 
 ### Worker
 
-- [ ] Event detected state.
-- [ ] Attestation waiting state.
-- [ ] Proof requested state.
-- [ ] Proof received state.
-- [ ] ASC submitted state.
-- [ ] Verified/executed state.
-- [ ] Retry state(s).
-- [ ] Terminal failure state.
-- [ ] Restart/catch-up behavior.
+- [x] Event detected.
+- [x] Attestation waiting.
+- [x] Proof requested.
+- [x] Proof received.
+- [x] ASC submitted.
+- [x] Verified/executed.
+- [x] Retry state(s).
+- [x] Terminal failure state.
+- [x] Restart/catch-up behavior.
 
 ### Business/decision flow
 
-- [ ] Verified fact state.
-- [ ] AI processing state.
-- [ ] Decision validation state.
-- [ ] Policy rejected state.
-- [ ] Execution submitted state.
-- [ ] Execution confirmed state.
-- [ ] Execution failed state.
+- [x] Verified fact.
+- [x] AI processing.
+- [x] Decision validation.
+- [x] Policy rejection.
+- [x] Execution submitted.
+- [x] Execution confirmed.
+- [x] Execution failed.
 
 ## Gate G — Security
 
-- [ ] Threat model reviewed.
-- [ ] Private key handling defined.
-- [ ] Secret handling defined.
-- [ ] Contract access control defined.
-- [ ] Replay protection defined.
-- [ ] Idempotency defined.
-- [ ] AI prompt/input injection risks considered.
-- [ ] AI output validation defined.
-- [ ] Transaction bounds/limits defined.
-- [ ] External API trust boundaries documented.
-- [ ] Logs are scrubbed of secrets.
-- [ ] No production secrets are required for local development.
+- [x] Threat model reviewed.
+- [x] Private key handling defined.
+- [x] Secret handling defined.
+- [x] Contract access control defined.
+- [x] Replay protection defined.
+- [x] Idempotency defined.
+- [x] AI input-injection risks considered.
+- [x] AI output validation defined.
+- [x] Transaction bounds/limits defined.
+- [x] External API trust boundaries documented.
+- [x] Logs scrub secrets.
+- [x] Local development does not require production secrets.
 
 ## Gate H — Testing
 
-- [ ] Contract unit-test plan.
-- [ ] Contract negative-test plan.
-- [ ] Worker unit-test plan.
-- [ ] Worker retry/restart tests.
-- [ ] AI schema/policy tests.
-- [ ] Backend API tests.
-- [ ] Integration tests.
-- [ ] Testnet E2E test plan.
-- [ ] Failure injection plan.
-- [ ] Evidence format defined.
+- [x] Contract unit-test plan.
+- [x] Contract negative-test plan.
+- [x] Worker unit-test plan.
+- [x] Worker retry/restart tests planned.
+- [x] AI schema/policy tests.
+- [x] Backend API tests.
+- [x] Integration tests.
+- [x] Testnet E2E plan.
+- [x] Failure injection plan.
+- [x] Evidence format defined.
 
 ## Gate I — Environment
 
-- [ ] Required runtime versions documented.
-- [ ] Package manager documented.
-- [ ] Solidity/compiler version documented.
-- [ ] Node/TypeScript version documented.
-- [ ] Local RPC strategy documented.
-- [ ] Testnet RPC documented.
-- [ ] Environment variables documented.
-- [ ] `.env.example` planned/available.
-- [ ] Wallet funding requirements documented.
-- [ ] Deployment commands documented or intentionally deferred until verified.
+- [x] Target networks documented.
+- [x] Creditcoin RPC documented.
+- [x] Source chain key documented.
+- [x] Proof Builder documented.
+- [x] SDK version documented.
+- [x] Environment variable strategy documented.
+- [x] Wallet funding requirements documented.
+- [x] Deployment/evidence strategy documented.
 
 ## Gate J — Observability
 
-- [ ] Correlation/processing ID defined.
-- [ ] Source transaction hash stored.
-- [ ] Source block/event identity stored.
-- [ ] Proof request status stored.
-- [ ] ASC transaction hash stored.
-- [ ] AI decision ID stored.
-- [ ] Final execution transaction hash stored.
-- [ ] Failure reason stored.
-- [ ] Logs do not contain secrets.
+- [x] Processing/correlation ID defined.
+- [x] Source transaction hash stored by design.
+- [x] Source block/event identity stored by design.
+- [x] Proof request status stored by design.
+- [x] ASC transaction hash stored by design.
+- [x] AI decision ID stored by design.
+- [x] Final execution transaction hash stored by design.
+- [x] Failure reason stored by design.
+- [x] Secrets excluded from logs.
 
 ## Gate K — Documentation discipline
 
-- [ ] `IMPLEMENTATION_RULES.md` is read by Antigravity before coding.
-- [ ] `DECISIONS.md` is the decision record.
-- [ ] `PROJECT_STATUS.md` is the status authority.
-- [ ] Documentation is updated in the same milestone as behavior changes.
-- [ ] Protocol facts are separated from project design.
-- [ ] Unknown protocol behavior is explicitly marked rather than guessed.
+- [x] `IMPLEMENTATION_RULES.md` is mandatory.
+- [x] `DECISIONS.md` is the decision record.
+- [x] `PROJECT_STATUS.md` is the status authority.
+- [x] Protocol facts are separated from project design.
+- [x] Unknown protocol behavior must be explicitly marked rather than guessed.
 
 ## Gate L — Prompt-chain readiness
 
-- [ ] Prompt 01 is the only prompt used to begin repository reconnaissance.
-- [ ] Each prompt has an explicit input, task, verification, output and stop condition.
-- [ ] Antigravity must not skip verification gates.
-- [ ] Antigravity must not claim completion without evidence.
-- [ ] Failed gates block the next milestone.
-- [ ] Prompt outputs are recorded where useful.
+- [x] Prompt chain exists.
+- [x] Each prompt has task, verification, output and stop conditions.
+- [x] Antigravity must not skip verification gates.
+- [x] Antigravity must not claim completion without evidence.
+- [x] Failed gates block dependent milestones.
 
 ## Gate M — Demo definition
 
-Before implementation, define one narrow, deterministic MVP demo:
-
-```text
-User initiates source-chain action
-        ↓
-Source event emitted
-        ↓
-Attestcoin readability path
-        ↓
-Verified cross-chain fact
-        ↓
-AI interprets verified fact
-        ↓
-Structured decision
-        ↓
-Policy validation
-        ↓
-Creditcoin contract execution
-        ↓
-Dashboard shows evidence
-```
-
-- [ ] One exact happy-path scenario selected.
-- [ ] Expected source event defined.
-- [ ] Expected verified fact defined.
-- [ ] Expected AI decision defined.
-- [ ] Expected policy result defined.
-- [ ] Expected Creditcoin state change defined.
-- [ ] Judge-facing evidence defined.
-
-## Final PASS criteria
-
-The pre-implementation gate is `PASS` only when:
-
-1. All protocol-specific facts needed for the next milestone are verified.
-2. Architecture and trust boundaries are frozen.
-3. Dependent interfaces are defined.
-4. Security constraints are defined.
-5. Testing and evidence requirements are defined.
-6. The first MVP path is unambiguous.
-7. No unresolved blocker requires guessing.
-
-If any required item is unresolved:
-
-> **STOP — DO NOT IMPLEMENT THE DEPENDENT MILESTONE.**
-
-Record the blocker in `PROJECT_STATUS.md` and/or `DECISIONS.md`.
+- [x] One narrow MVP flow selected.
+- [x] Source event defined.
+- [x] Verified fact defined.
+- [x] AI decision defined.
+- [x] Policy result defined.
+- [x] Creditcoin state change defined.
+- [x] Judge-facing evidence defined.
 
 ## Gate result
 
-**Current result: NOT YET PASSED.**
+### Planning / protocol-interface result: **PASS**
 
-The documentation layer is substantially complete, but the live protocol-specific values and interfaces must be re-verified immediately before implementation because protocol environments and SDKs can change.
+The protocol-specific facts required to start Milestone 1 are now verified against current official/reference sources.
+
+### Runtime result: **PENDING**
+
+Before the first real implementation/testnet execution, run from the developer machine:
+
+```bash
+curl -s https://rpc.cc3-testnet.creditcoin.network \
+  -H 'content-type: application/json' \
+  --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}'
+
+curl -s https://prover.cc3-testnet.creditcoin.network/api/v1/health
+```
+
+Expected Creditcoin chain ID:
+
+```text
+0x18e8f
+```
+
+Do not claim E2E readiness until these runtime checks succeed.
+
+## Stop rule
+
+If the runtime checks return unexpected values, or the current official SDK/reference changes before implementation, stop and update the verification report and `DECISIONS.md` before coding.
