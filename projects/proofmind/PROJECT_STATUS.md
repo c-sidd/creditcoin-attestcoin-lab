@@ -8,9 +8,11 @@ This is the operational status board for ProofMind. Documentation, implementatio
 - Documentation foundation: **complete**.
 - Antigravity prompt-chain control plane: **complete** under `prompts/`.
 - Evidence framework/templates: **complete** under `evidence/`.
+- Implementation rules: **complete** under `IMPLEMENTATION_RULES.md`.
+- Pre-implementation verification checklist: **added; currently NOT PASSED** under `PRE_IMPLEMENTATION_GATE.md`.
 - Creditcoin/Attestcoin learning material: present in the parent lab repository.
 - Existing tutorial/reference implementation: preserved under `examples/usc-testnet-bridge-examples` as a reference submodule.
-- ProofMind implementation: **in progress / not yet end-to-end complete**.
+- ProofMind implementation: **not yet started for the new implementation phase**.
 - Complete Sepolia → Attestcoin → AI → Creditcoin testnet execution: **not yet proven by committed evidence**.
 
 ## Source-of-truth hierarchy
@@ -33,12 +35,22 @@ Every milestone requires all four:
 
 Mocks may prove isolated component behavior but cannot satisfy a real protocol/testnet gate.
 
+## Pre-implementation gate
+
+Before Antigravity begins implementation, `PRE_IMPLEMENTATION_GATE.md` must be reviewed.
+
+The gate is **NOT PASSED** until all protocol-specific facts required by the first implementation milestone have been re-verified against the current official Creditcoin documentation and preserved reference implementation.
+
+In particular, do not begin protocol integration while the exact Proof Builder contract, verifier/precompile interface, SDK usage, or current testnet configuration remains uncertain.
+
 ## Milestone status
 
 | Milestone | Status | Completion evidence |
 |---|---|---|
 | Repository reconnaissance | Complete for planning | Repository/reference inspection |
 | Documentation specification | Complete | `docs/32-completeness-audit.md` |
+| Implementation rules | Complete | `IMPLEMENTATION_RULES.md` |
+| Pre-implementation gate | Not passed | `PRE_IMPLEMENTATION_GATE.md` |
 | Antigravity prompt chain | Complete | `prompts/00-README.md` + prompts 01–20 |
 | Evidence framework | Complete | `evidence/README.md` + E2E template |
 | Source event contract | Not implemented | Sepolia deployment + event tx required |
