@@ -1,6 +1,6 @@
 # ProofMind Documentation Index
 
-This directory is the implementation specification for ProofMind. Read documents in order when building the project with Antigravity or manually.
+This directory is the implementation specification for ProofMind. It is intentionally split into a **flat numbered implementation curriculum** and a **deep engineering reference tree**. The numbered documents explain the project in sequence; the deep tree is the long-term engineering memory for Antigravity and future contributors.
 
 ## Reading order
 
@@ -38,19 +38,39 @@ This directory is the implementation specification for ProofMind. Read documents
 | 30 | [Antigravity Milestone Prompts](30-antigravity-milestone-prompts.md) | Small prompts for each implementation milestone |
 | 31 | [Demo & Judge Checklist](31-demo-and-judge-checklist.md) | Final demo readiness and judge questions |
 
+## Deep engineering reference
+
+These folders are the project's detailed engineering memory. Each contains a focused guide and can be expanded with implementation-specific documents as the codebase grows.
+
+- [`00-project-context/`](00-project-context/) — canonical overview, goals, non-goals and terminology
+- [`01-product/`](01-product/) — product requirements, personas, stories, use cases and pitch
+- [`02-architecture/`](02-architecture/) — component architecture, trust model and system boundaries
+- [`03-creditcoin/`](03-creditcoin/) — protocol source-of-truth and Attestcoin reference material
+- [`04-ai/`](04-ai/) — AI agent, decision engine, verified-data boundary and provider interface
+- [`05-smart-contracts/`](05-smart-contracts/) — contract responsibilities, events, access control and replay protection
+- [`06-worker/`](06-worker/) — event monitoring, attestation waiting, proof generation, retries and state
+- [`07-backend/`](07-backend/) — persistence, services and API contracts
+- [`08-frontend/`](08-frontend/) — dashboard screens and evidence presentation
+- [`09-security/`](09-security/) — threat model and security controls
+- [`10-testing/`](10-testing/) — test layers and failure matrix
+- [`11-infrastructure/`](11-infrastructure/) — local/testnet configuration and deployment concerns
+- [`12-development/`](12-development/) — implementation workflow, coding conventions and definition of done
+- [`../diagrams/`](../diagrams/) — architecture and sequence diagram source files
+
 ## Implementation order
 
 1. Read 01–05 to understand the product and freeze the MVP.
-2. Read 06–08 to freeze the Creditcoin/Attestcoin architecture and trust boundaries.
-3. Read 10–11 before implementing contracts or changing event/data schemas.
-4. Read 12 and 26 before implementing the worker state machine and persistence.
-5. Read 09 and 28 before implementing the AI provider boundary.
-6. Read 17 before implementing any AI-triggered on-chain action.
-7. Read 13, 18 and 27 before implementing backend persistence, APIs and dashboard views.
-8. Read 14, 16 and 29 continuously while testing and hardening.
-9. Use 24 and 30 to execute the implementation milestone by milestone.
-10. Use 19 and 31 when preparing the live ideathon demonstration.
-11. Use 22 as the final master instruction for Antigravity after it has inspected the repository and the documents above.
+2. Read `00-project-context/`, `01-product/` and `02-architecture/` for the durable project context.
+3. Read 06–08 and `03-creditcoin/` to freeze the Creditcoin/Attestcoin architecture and trust boundaries.
+4. Read 10–11 and `05-smart-contracts/` before implementing contracts or changing event/data schemas.
+5. Read 12 and `06-worker/` before implementing the worker state machine and persistence.
+6. Read 09 and `04-ai/` before implementing the AI provider boundary.
+7. Read 17 before implementing any AI-triggered on-chain action.
+8. Read 13, 18, 27 and `07-backend/`/`08-frontend/` before implementing evidence persistence, APIs and dashboard views.
+9. Read 14, 16 and `09-security/`/`10-testing/` continuously while testing and hardening.
+10. Use 24 and 30 to execute implementation milestone by milestone.
+11. Use 19 and 31 when preparing the live ideathon demonstration.
+12. Use 22 as the final master instruction for Antigravity after it has inspected the repository and reference implementation.
 
 ## Source-of-truth rule
 
@@ -59,6 +79,8 @@ If implementation conflicts with these documents, stop and resolve the conflict 
 If a protocol-specific detail conflicts with an existing Creditcoin/Attestcoin tutorial or official documentation, do not invent a replacement. Inspect the reference implementation, verify the documented interface, and record the resulting decision.
 
 ## Current implementation status
+
+### Documentation
 
 - [x] Product concept and MVP defined
 - [x] Architecture and trust boundaries documented
@@ -70,6 +92,10 @@ If a protocol-specific detail conflicts with an existing Creditcoin/Attestcoin t
 - [x] Test strategy documented
 - [x] Antigravity master and milestone prompts documented
 - [x] Demo/judge checklist documented
+- [x] Deep engineering reference tree added
+
+### Implementation
+
 - [ ] Source-chain contract implemented and tested
 - [ ] Creditcoin ASC implemented and tested against the real verifier interface
 - [ ] Off-chain worker implemented against the real Proof Builder flow
@@ -79,4 +105,4 @@ If a protocol-specific detail conflicts with an existing Creditcoin/Attestcoin t
 - [ ] Dashboard implemented
 - [ ] End-to-end CC3 Testnet flow demonstrated
 
-The checkboxes above distinguish **documentation completeness** from **implementation completeness**. A documented feature must not be presented as implemented until its corresponding tests and deployment evidence exist.
+The checkboxes deliberately distinguish **documentation completeness** from **implementation completeness**. A documented feature must not be presented as implemented until its corresponding tests and deployment evidence exist.
