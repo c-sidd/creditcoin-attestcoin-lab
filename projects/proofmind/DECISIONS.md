@@ -43,3 +43,21 @@ Persist source transaction hash, block number, event identifier, proof request s
 ## D010 — Demo reliability beats feature count
 
 A small end-to-end flow that works repeatedly is preferred over multiple partially integrated features.
+
+## D011 — Optimize for hackathon quality before AI cost
+
+**Decision:** During the ideathon build, AI inference cost is not the primary optimization target. Use the strongest suitable currently available OpenAI model accessible to the project as the primary provider, subject to API availability and structured-output support.
+
+**Fallback:** Groq + Llama may be supported through the same provider abstraction.
+
+**Reason:** ProofMind's competitive value depends on strong reasoning, clear explanations, reliable structured decisions, and a convincing verified-data-to-blockchain demo. Cost optimization can be addressed after a reliable end-to-end flow exists.
+
+**Constraint:** The exact model identifier must be verified against the current provider API before implementation. Do not hard-code or invent a model identifier based only on the name "Luna".
+
+## D012 — AI provider must be replaceable
+
+AI provider SDKs must not leak throughout the application. The decision engine uses an abstract provider interface, allowing OpenAI and Groq/Llama to be swapped without changing Attestcoin, worker, evidence, or contract boundaries.
+
+## D013 — Environment configuration is explicit
+
+Every runtime dependency must be represented in `.env.example`, documented in `docs/24-environment-variables.md`, and validated at startup. Secrets must never be committed or exposed to the browser.
