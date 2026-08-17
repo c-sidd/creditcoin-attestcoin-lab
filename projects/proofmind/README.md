@@ -66,34 +66,42 @@ Evidence Dashboard
 
 ## Documentation
 
-Start with [`docs/00-INDEX.md`](docs/00-INDEX.md). The documentation is deliberately split into product, protocol, engineering, testing and demo layers so Antigravity can implement the project incrementally.
+Start with [`docs/00-INDEX.md`](docs/00-INDEX.md).
+
+The documentation has two layers:
+
+1. **Numbered implementation curriculum** — the original 01–31 documents used to build the MVP in order.
+2. **Deep engineering reference** — [`docs/00-project-context/`](docs/00-project-context/) through [`docs/12-development/`](docs/12-development/), which records detailed product, architecture, protocol, AI, contract, worker, backend, frontend, security, testing, infrastructure and development rules.
 
 Important documents:
 
-- [`06-architecture.md`](docs/06-architecture.md) — system boundaries and trust model
-- [`08-attestcoin-flow.md`](docs/08-attestcoin-flow.md) — Attestcoin-specific flow
-- [`09-ai-agent.md`](docs/09-ai-agent.md) — AI reasoning boundary
-- [`10-smart-contracts.md`](docs/10-smart-contracts.md) — contract responsibilities
-- [`12-offchain-worker.md`](docs/12-offchain-worker.md) — worker lifecycle
-- [`17-ai-decision-contract.md`](docs/17-ai-decision-contract.md) — deterministic enforcement
-- [`22-antigravity-master-prompt.md`](docs/22-antigravity-master-prompt.md) — master coding-agent instruction
-- [`23-project-structure.md`](docs/23-project-structure.md) — implementation layout
-- [`24-implementation-phases.md`](docs/24-implementation-phases.md) — build order
-- [`29-testing-strategy.md`](docs/29-testing-strategy.md) — validation plan
-- [`30-antigravity-milestone-prompts.md`](docs/30-antigravity-milestone-prompts.md) — incremental coding prompts
-- [`31-demo-and-judge-checklist.md`](docs/31-demo-and-judge-checklist.md) — final demonstration checklist
+- [`docs/06-architecture.md`](docs/06-architecture.md) — system boundaries and trust model
+- [`docs/08-attestcoin-flow.md`](docs/08-attestcoin-flow.md) — Attestcoin-specific flow
+- [`docs/09-ai-agent.md`](docs/09-ai-agent.md) — AI reasoning boundary
+- [`docs/10-smart-contracts.md`](docs/10-smart-contracts.md) — contract responsibilities
+- [`docs/12-offchain-worker.md`](docs/12-offchain-worker.md) — worker lifecycle
+- [`docs/22-antigravity-master-prompt.md`](docs/22-antigravity-master-prompt.md) — master coding-agent instruction
+- [`docs/23-project-structure.md`](docs/23-project-structure.md) — implementation layout
+- [`docs/24-implementation-phases.md`](docs/24-implementation-phases.md) — build order
+- [`docs/29-testing-strategy.md`](docs/29-testing-strategy.md) — validation plan
+- [`docs/30-antigravity-milestone-prompts.md`](docs/30-antigravity-milestone-prompts.md) — incremental coding prompts
+- [`docs/31-demo-and-judge-checklist.md`](docs/31-demo-and-judge-checklist.md) — final demonstration checklist
+- [`PROJECT_STATUS.md`](PROJECT_STATUS.md) — implementation evidence/status board
+- [`DECISIONS.md`](DECISIONS.md) — architectural decision record
 
 ## Status
 
 ### Documentation / planning
 
-**Complete.** The repository contains the detailed product, architecture, protocol, interface, security, testing, Antigravity and demo specifications. The master prompt explicitly requires Antigravity to inspect existing Creditcoin/Attestcoin reference implementations rather than invent undocumented protocol interfaces. fileciteturn113file0L2-L2
+**Complete as a planning foundation.** The repository contains product, architecture, protocol, interface, AI, contract, worker, backend, frontend, security, testing, infrastructure, Antigravity and demo specifications.
 
 ### Implementation
 
-**Not yet complete.** The next stage is implementation milestone by milestone. Documentation completion must not be confused with a working end-to-end protocol integration.
+**Not yet complete.** Documentation completion must not be confused with a working end-to-end protocol integration.
 
 The implementation is complete only when the real Sepolia → Attestcoin → Creditcoin flow has been tested and the dashboard can show the resulting evidence trail.
+
+See [`PROJECT_STATUS.md`](PROJECT_STATUS.md) for the current milestone board.
 
 ## Working rules
 
