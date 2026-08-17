@@ -20,18 +20,18 @@ Business Logic Contract
 
 The worker operates off-chain, while the contracts execute and verify logic on-chain.
 
----
-
 ## 2. Source Chain Smart Contract
 
 The source-chain contract is deployed on a supported source chain such as Ethereum or Sepolia.
 
-### What it should do
+### What to implement
 
 - Implement the dApp's source-chain logic.
 - Emit events containing the data that must later be verified on Creditcoin.
 - Structure events so relevant fields can be extracted easily.
 - Perform source-chain operations such as token burning when required.
+
+The source-chain contract should remain as minimal as practical. Ideally, its main cross-chain responsibility is to emit clearly defined events. Business logic that must happen on the source chain can execute before the event is emitted.
 
 ### Example
 
@@ -48,8 +48,6 @@ TokensBurnedForBridging event
 ```
 
 The event becomes the trigger for the off-chain Readability Worker.
-
----
 
 ## 3. Attestcoin Smart Contract (ASC)
 
@@ -82,52 +80,23 @@ Proofs + Encoded Transaction
 
 The ASC should not assume that transaction inclusion automatically means the transaction succeeded. Application logic should check the transaction/receipt status and confirm the expected event or conditions.
 
----
-
 ## 4. dApp Business Logic Contracts
 
 Business logic contracts are deployed on Creditcoin and contain the application's state and rules.
 
-They can be organized in two ways.
-
 ### Combined pattern
 
-The ASC and business logic live in one contract.
-
-```text
-ASC
- ├─ verify proofs
- ├─ decode data
- └─ execute business logic
-```
-
-This is suitable for simple applications.
+The ASC and business logic live in one contract. This is suitable for simple applications.
 
 ### Separated pattern
 
-The ASC handles cross-chain verification and calls a separate business logic contract.
-
-```text
-ASC
- │
- ├─ verify proofs
- ├─ decode data
- │
- ▼
-Business Logic Contract
- │
- └─ update application state
-```
-
-This is generally better for complex dApps because verification and application logic remain modular.
+The ASC handles cross-chain verification and calls a separate business logic contract. This is generally better for complex dApps because verification and application logic remain modular.
 
 ### Access control
 
 The business logic contract should normally restrict sensitive functions so that only the authorized ASC can invoke them.
 
 For example, a bridge token contract might grant the ASC permission to mint tokens after a valid source-chain burn has been verified.
-
----
 
 ## 5. Readability Worker
 
@@ -159,13 +128,45 @@ The Readability Worker is an off-chain service that watches the source chain and
 6. Verify & Execute
 ```
 
-The worker is an orchestration component; the cryptographic verification itself happens on Creditcoin through the native precompile.
+The worker is an orchestration component; cryptographic verification happens on Creditcoin through the native precompile.
 
----
+## 6. dApp Design Patterns: Readability
 
-## 6. Complete Cross-Chain Flow
+### Keep the source-chain contract minimal
 
-A complete Readability-based dApp can follow this sequence:
+The source-chain contract should focus on emitting events containing the data needed by the ASC. Any unavoidable source-chain business logic, such as burning tokens, happens before the event.
+
+### Use a single source-chain contract where practical
+
+An ASC-enabled dApp should ideally have one source-chain contract emitting the relevant readability events. This lets the worker monitor one contract address.
+
+### Use unambiguous events
+
+Prefer specific events for each cross-chain action:
+
+```text
+LoanInitiated
+LoanRepaid
+TokensBurnedForBridging
+```
+
+Avoid using generic events such as a standard `Transfer` event as the sole trigger for cross-chain functionality.
+
+### Include all required data
+
+Events should contain the information the Creditcoin ASC needs. For example:
+
+```text
+TokensBurnedForBridging(
+    from,
+    recipient,
+    amount
+)
+```
+
+If the source event does not contain required data, the ASC may not have enough information to execute the destination-chain business logic safely.
+
+## 7. Complete Cross-Chain Flow
 
 ```text
 User signs transaction on source chain
@@ -191,17 +192,59 @@ ASC calls Business Logic Contract
 Creditcoin dApp state is updated
 ```
 
-This creates a cross-chain trigger where an event on one blockchain can safely cause application logic on Creditcoin.
+## 8. Offchain Readability Worker: Reliability Design
 
----
+The worker provides the automation that makes the cross-chain UX seamless. Without a worker, users would have to wait for attestation, obtain proofs, format them, and submit a second transaction themselves.
 
-## 7. Example: Token Bridge
+A robust worker should:
+
+- Persist events that are currently being processed.
+- Catch up on events missed during shutdowns.
+- Track processed events to avoid duplicate submissions.
+- Use multiple source-chain RPC endpoints where practical.
+- Retry proof-generation failures.
+- Retry failed ASC submissions when safe.
+- Track processing status and expose useful logs/metrics.
+
+### Logical worker state machine
+
+```text
+Monitor source chain
+        ↓
+Event detected?
+   No ───┘
+   Yes
+    ↓
+Wait for attestation
+    ↓
+Attested?
+ No → retry after delay
+ Yes
+    ↓
+Generate proofs
+    ↓
+Proof generation successful?
+ No → retry
+ Yes
+    ↓
+Call ASC
+    ↓
+ASC call successful?
+ No → retry when safe
+ Yes
+    ↓
+Verification + business logic
+    ↓
+Success
+```
+
+The documentation also describes future third-party relayers that may provide readability query submission as a paid service, allowing dApp teams to avoid operating their own worker.
+
+## 9. Example: Token Bridge
 
 A simplified bridge demonstrates the architecture well.
 
 ### Source chain
-
-A user burns tokens:
 
 ```text
 User
@@ -251,9 +294,7 @@ Creditcoin Token Contract
 Mint wrapped tokens
 ```
 
----
-
-## 8. Infrastructure Checklist
+## 10. Infrastructure Checklist
 
 ### Source-chain side
 
@@ -271,6 +312,8 @@ Mint wrapped tokens
 - [ ] Retry handling implemented.
 - [ ] Duplicate-event protection implemented.
 - [ ] Processing status/logging implemented.
+- [ ] Missed-event recovery implemented.
+- [ ] Multiple RPC endpoint support considered.
 
 ### Creditcoin contracts
 
@@ -280,10 +323,9 @@ Mint wrapped tokens
 - [ ] Expected event/data validated.
 - [ ] Business logic contract deployed.
 - [ ] ASC access permissions configured.
+- [ ] Replay/duplicate processing protection implemented.
 
----
-
-## 9. Important Security Principle
+## 11. Important Security Principle
 
 The worker and relayer infrastructure should not be treated as the ultimate source of truth.
 
@@ -308,21 +350,18 @@ Verified source-chain transaction
 
 A malicious or faulty worker should not be able to turn an invalid source-chain transaction into valid application state as long as the ASC correctly performs proof verification and application-specific validation.
 
-## 10. Key Takeaway
-
-The Attestcoin dApp architecture separates responsibilities:
+## 12. Key Takeaway
 
 | Component | Main responsibility |
 |---|---|
 | Source Chain Contract | Produce the event/data |
-| Readability Worker | Detect events and submit proofs |
+| Readability Worker | Detect events, obtain proofs, submit ASC calls |
 | ASC | Verify cross-chain data and trigger logic |
 | Block Prover Precompile | Cryptographically verify proofs |
 | Business Logic Contract | Maintain dApp state and execute rules |
 
-This separation makes it possible to build cross-chain applications without requiring every dApp team to build its own bridge or centralized oracle system.
+The architecture separates event production, off-chain orchestration, cryptographic verification, and application logic. This gives builders a reusable pattern for cross-chain applications while keeping the security-critical verification path on Creditcoin.
 
 ## Source
 
-Creditcoin Docs — dApp Builder Infrastructure:
-https://docs.creditcoin.org/attestcoin-protocol/dapp-builder-infrastructure
+Creditcoin Docs — dApp Builder Infrastructure and Attestcoin Readability Design Patterns.
