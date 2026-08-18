@@ -1,66 +1,134 @@
 # 11 — Interfaces and Data Contracts
 
-The purpose of this document is to prevent different AI-generated components from inventing incompatible payloads.
+The purpose of this document is to prevent AI-generated components from inventing incompatible payloads.
+
+> **Classification:** Project Design unless explicitly marked as a Creditcoin/Attestcoin protocol interface.
 
 ## Event identity
 
 ```text
-sourceChainId
+sourceChainKey
+sourceEvmChainId
 sourceContract
 sourceTxHash
+sourceBlockNumber
 logIndex
 eventType
+actionId
 ```
 
-This tuple becomes the canonical event identity.
+The canonical event identity must be deterministic and unique.
 
-## VerifiedFact
+## ObservedEvent
+
+An RPC observation is operational input only:
 
 ```json
 {
-  "evidenceId": "ev_001",
-  "sourceChainId": 11155111,
+  "sourceChainKey": 1,
+  "sourceEvmChainId": 11155111,
   "sourceContract": "0x...",
   "sourceTxHash": "0x...",
   "sourceBlockNumber": 123,
-  "eventType": "RiskSignalSubmitted",
-  "signalId": "0x...",
-  "subject": "0x...",
-  "signalValue": "42",
-  "verified": true,
-  "verifiedOnChain": "creditcoin",
-  "verificationTxHash": "0x..."
+  "logIndex": 0,
+  "eventType": "ProofMindCreditEvent",
+  "observedAt": "2026-08-18T00:00:00Z"
 }
 ```
 
-`verified` is a backend representation of a successful on-chain verification. It must never be set merely because the worker saw the event.
+`ObservedEvent` must never be treated as verified financial data.
 
-## AI decision
+## VerifiedFact
+
+Created only after successful documented Attestcoin verification:
 
 ```json
 {
   "evidenceId": "ev_001",
-  "decision": "ALLOW",
-  "score": 82,
-  "reasonCodes": ["VERIFIED_ACTIVITY"],
-  "action": "APPROVE_LIMIT",
-  "limit": "1000000000000000000",
-  "modelVersion": "proofmind-model-v1",
-  "createdAt": "2026-01-01T00:00:00Z"
+  "sourceChainKey": 1,
+  "sourceEvmChainId": 11155111,
+  "sourceContract": "0x...",
+  "sourceTxHash": "0x...",
+  "sourceBlockNumber": 123,
+  "logIndex": 0,
+  "eventType": "ProofMindCreditEvent",
+  "subject": "0x...",
+  "assets": "25000",
+  "liabilities": "7500",
+  "repaymentRatioBps": 9600,
+  "liquidationCount": 0,
+  "verified": true,
+  "verificationTxHash": "0x...",
+  "verifiedAt": "2026-08-18T00:05:00Z"
 }
 ```
 
-## Worker API states
+The exact source event fields are defined by the implemented MVP contract. Do not invent protocol fields.
+
+## FinancialProfile
+
+Derived from one or more verified facts plus deterministic metrics:
+
+```json
+{
+  "evidenceIds": ["ev_001"],
+  "collateralRatioBps": 33333,
+  "utilizationBps": 3000,
+  "debtExposure": "7500",
+  "concentrationBps": 10000,
+  "liquidationCount": 0,
+  "scenarioStatus": "SAFE"
+}
+```
+
+Derived metrics must identify their formula/version in implementation documentation.
+
+## Multi-agent output
+
+Each agent should return structured output rather than executable instructions. Example:
+
+```json
+{
+  "agent": "risk",
+  "riskLevel": "LOW",
+  "riskScore": 23,
+  "reasonCodes": ["STRONG_REPAYMENT_HISTORY"],
+  "evidenceIds": ["ev_001"],
+  "agentVersion": "risk-v2"
+}
+```
+
+## Final decision proposal
+
+```json
+{
+  "evidenceIds": ["ev_001"],
+  "decision": "APPROVE_WITH_LIMIT",
+  "riskLevel": "LOW",
+  "riskScore": 23,
+  "recommendedCreditLimit": "5000",
+  "reasonCodes": ["STRONG_REPAYMENT_HISTORY"],
+  "scenarioStatus": "SAFE",
+  "action": "PROPOSE_CREDIT",
+  "modelVersion": "proofmind-multi-agent-v2"
+}
+```
+
+This is Project Design and is not a Creditcoin protocol API.
+
+## Worker states
 
 ```text
 DETECTED
 WAITING_FOR_ATTESTATION
+ATTESTED
 PROOF_REQUESTED
 PROOF_READY
 VERIFICATION_SUBMITTED
 VERIFIED
 AI_PENDING
 AI_DECIDED
+POLICY_PENDING
 EXECUTION_SUBMITTED
 EXECUTED
 FAILED_RETRYABLE
@@ -69,30 +137,17 @@ FAILED_FINAL
 
 ## Backend endpoints
 
-Suggested MVP endpoints:
-
 - `GET /api/health`
 - `GET /api/events`
 - `GET /api/events/:evidenceId`
 - `GET /api/events/:evidenceId/timeline`
 - `POST /api/ai/decisions/:evidenceId`
 - `GET /api/decisions/:evidenceId`
+- `GET /api/risk/:evidenceId`
+- `POST /api/risk/:evidenceId/simulate`
 
-The UI should not call blockchain/provider APIs directly when the backend already owns the orchestration state.
+AI/risk endpoints must refuse unverified evidence.
 
 ## Environment variables
 
-```text
-SOURCE_RPC_URL=
-CREDITCOIN_RPC_URL=
-SOURCE_CONTRACT_ADDRESS=
-ASC_CONTRACT_ADDRESS=
-DECISION_CONTRACT_ADDRESS=
-PROOF_BUILDER_URL=
-AI_API_KEY=
-DATABASE_URL=
-WORKER_PRIVATE_KEY=
-CREDITCOIN_PRIVATE_KEY=
-```
-
-Never commit actual values.
+Use the repository's `.env.example` as the authoritative variable list. At minimum the application needs configurable source RPC, Creditcoin RPC, contract addresses, Proof Builder endpoint, AI provider configuration, persistence, and signing credentials. Never commit actual values.
