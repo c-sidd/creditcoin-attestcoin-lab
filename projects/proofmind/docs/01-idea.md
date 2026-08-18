@@ -2,46 +2,80 @@
 
 ## Product
 
-**ProofMind** is a cross-chain AI decision engine where AI reasoning is grounded in source-chain facts that have been cryptographically verified through the Attestcoin Protocol.
+**ProofMind** is an Attestcoin-powered cross-chain AI credit and risk intelligence system for Creditcoin.
+
+It takes selected financial facts from another blockchain, verifies their provenance through Attestcoin Readability, builds a structured financial profile, analyzes that profile with specialized AI agents, applies deterministic risk and policy controls, and produces a bounded transaction intent for a Creditcoin smart contract.
 
 ## Core thesis
 
-Traditional AI workflows often assume that the data supplied to the model is trustworthy. Traditional blockchain oracle workflows can prove data but may leave the application developer with a narrow data pipeline. ProofMind combines the two layers:
+The product is not "AI plus blockchain" as two unrelated components. Each layer solves a different problem:
 
-- **Attestcoin:** establishes cross-chain data authenticity.
-- **AI:** interprets verified facts and produces a structured decision.
-- **Creditcoin contracts:** enforce the permitted action and update state.
+- **Attestcoin:** establishes the cryptographic verification boundary for selected cross-chain facts.
+- **VerifiedFact layer:** preserves provenance and separates verified data from contextual metadata.
+- **AI agents:** interpret complex verified financial information and produce structured analysis.
+- **Risk/simulation engine:** performs deterministic calculations and controlled what-if scenarios.
+- **Policy layer:** constrains what may be proposed and executed.
+- **Creditcoin contracts:** enforce the final permitted action on-chain.
 
-## Example mental model
+## Primary use case
+
+A borrower requests credit on Creditcoin while important financial history exists on another chain. ProofMind verifies selected cross-chain facts, evaluates the resulting financial profile, and proposes a bounded credit decision.
+
+## Multi-agent roles
+
+1. **Financial Analyst Agent** — organizes verified assets, liabilities and history.
+2. **Risk Agent** — evaluates financial risk and produces structured risk indicators.
+3. **Fraud/Anomaly Agent** — identifies unusual patterns for review.
+4. **Credit Agent** — proposes a bounded credit limit and risk tier.
+5. **Policy Agent** — converts the proposal into an allowed transaction intent; the smart contract remains the final authority.
+
+These roles are project architecture, not Creditcoin protocol features.
+
+## End-to-end mental model
 
 ```text
-Source-chain fact
-      ↓
-Attestation + proofs
-      ↓
+Cross-chain financial facts
+          ↓
+Attestcoin attestation + proofs
+          ↓
 Creditcoin verification
-      ↓
-Verified fact envelope
-      ↓
-AI analysis
-      ↓
-Bounded decision
-      ↓
-Creditcoin execution
+          ↓
+Verified financial profile
+          ↓
+┌─────────────────────────────┐
+│ Multi-agent AI analysis     │
+│ Analyst → Risk → Anomaly    │
+│ → Credit → Policy           │
+└──────────────┬──────────────┘
+               ↓
+Deterministic risk + simulation
+               ↓
+Policy validation
+               ↓
+Bounded transaction intent
+               ↓
+Creditcoin smart contract
+               ↓
+On-chain enforcement
+               ↓
+Evidence dashboard
 ```
+
+## Why AI is necessary
+
+A fixed smart-contract rule can enforce a simple threshold, but the application may need to interpret multiple heterogeneous financial signals, summarize historical behavior, identify unusual combinations, compare structured scenarios and provide explainable reasons. AI is used for this interpretation layer, while deterministic calculations and smart contracts remain responsible for hard constraints.
+
+AI is therefore **not** the source of truth and is **not** the final authorization authority.
 
 ## What makes it interesting
 
-The AI is not merely a chatbot sitting beside a blockchain application. A verified cross-chain event becomes an actual input into an autonomous decision pipeline, and the final action is visible on-chain.
-
-## MVP story
-
-A source-chain user submits a structured risk signal. ProofMind automatically verifies that event on Creditcoin, sends only the verified fields to an AI agent, receives a schema-constrained risk decision, and asks a Creditcoin contract to execute an allowed action.
+A source-chain fact does not stop at a proof. The verified fact becomes an input to an explainable financial intelligence pipeline, and the resulting bounded action is enforced on Creditcoin.
 
 ## Non-goals
 
 - Building a new LLM.
 - Replacing Attestcoin with a centralized oracle.
-- Putting arbitrary AI-generated code on-chain.
+- Giving an LLM unrestricted wallet or contract authority.
+- Claiming production-grade credit underwriting.
 - Supporting every source chain in the MVP.
-- Building a production-grade financial product before the protocol flow works.
+- Treating illustrative risk formulas or thresholds as Creditcoin protocol behavior.
