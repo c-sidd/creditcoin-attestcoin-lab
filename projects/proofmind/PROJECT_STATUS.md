@@ -17,18 +17,21 @@ Risk/simulation = deterministic controls
 Creditcoin contract = final enforcement
 ```
 
-The multi-agent design is documented in `docs/PRODUCT_DIRECTION_V2.md` and `docs/09-ai-agent.md`.
+## Execution status
+
+Implementation is being executed strictly one step at a time. A step is not started until the previous step has a committed completion artifact.
 
 ## Current state
 
 - V2 product direction: **defined**.
 - Documentation foundation: **complete**.
-- Antigravity prompt-chain control plane: **complete** under `prompts/`.
-- Evidence framework/templates: **complete** under `evidence/`.
+- Antigravity prompt-chain control plane: **complete**.
+- Evidence framework/templates: **complete**.
 - Implementation rules: **complete**.
-- Protocol interface verification for the planned first milestone: **complete** according to the repository's recorded verification artifact.
-- Existing tutorial/reference implementation: **preserved** under `examples/usc-testnet-bridge-examples`.
-- Existing source/ASC/policy/worker/AI scaffolding: **present and partially tested**.
+- **Step 01 — Repository & dependency audit: COMPLETE** — `evidence/step-01-repository-audit-2026-08-19.md`.
+- **Step 02 — Protocol interface verification: IN PROGRESS**.
+- Existing tutorial/reference implementation: preserved under `examples/usc-testnet-bridge-examples`.
+- Existing source/ASC/policy/worker/AI scaffolding: present and partially tested.
 - New V2 end-to-end implementation: **not yet proven**.
 - Complete Sepolia → Attestcoin → profile → multi-agent AI → policy → Creditcoin execution: **not yet proven by committed testnet evidence**.
 
@@ -44,7 +47,7 @@ Never silently convert a project assumption into a protocol fact.
 
 ## Verified Milestone-1 protocol boundary
 
-The current recorded testnet planning values are documented in `docs/33-protocol-interface-verification-2026-08-18.md` and must be rechecked if Creditcoin publishes changes.
+Current recorded planning values are documented in `docs/33-protocol-interface-verification-2026-08-18.md`. Step 02 must re-verify them against current protocol documentation/SDK before implementation relies on them.
 
 ```text
 Source chain: Ethereum Sepolia
@@ -74,27 +77,25 @@ Mocks can prove isolated application behavior but cannot satisfy a real Attestco
 
 ## Milestone status
 
-| Area | Status | Required evidence |
-|---|---|---|
-| Product/problem definition | Complete | `docs/PRODUCT_DIRECTION_V2.md` |
-| Architecture/trust boundaries | Complete | architecture + decision docs |
-| Protocol interface verification | Complete for planning | verification artifact |
-| Source event contract | Existing/tested | contract tests + deployment evidence |
-| Attestcoin ASC integration | Existing/tested in scaffold | protocol tests + real testnet evidence |
-| Readability worker | Existing/tested in scaffold | restart/retry + real proof evidence |
-| AI provider abstraction | Existing/tested | provider and schema tests |
-| Multi-agent V2 orchestration | Needs implementation alignment | agent tests + integrated verified-data test |
-| Deterministic risk engine | Needs V2 implementation | formula/unit tests |
-| Scenario simulator | Needs V2 implementation | deterministic scenario tests |
-| Credit/policy contract | Existing/tested scaffold; V2 policy alignment required | contract negative tests + deployment |
-| Evidence backend | Not complete | API/database tests |
-| Dashboard | Not complete | full evidence timeline |
-| Local integration | Existing/tested scaffold | regression evidence |
-| CC3 testnet E2E | Not complete | Sepolia + Attestcoin + Creditcoin transaction hashes |
-| Security hardening | Not complete | negative-test matrix |
-| Reliability/observability | Not complete | failure injection/recovery evidence |
-| Ideathon demo | Not complete | rehearsed real evidence flow |
-| Final release audit | Not complete | clean-checkout/reproducible release |
+| Area | Status |
+|---|---|
+| Step 01 — Repository audit | **Complete** |
+| Step 02 — Protocol interface verification | **In progress** |
+| Source event contract | Existing/tested scaffold |
+| Attestcoin ASC integration | Existing/tested scaffold; real testnet evidence required |
+| Readability worker | Existing/tested scaffold; real proof evidence required |
+| AI provider abstraction | Existing/tested |
+| Multi-agent V2 orchestration | Needs implementation alignment |
+| Deterministic risk engine | Needs V2 implementation |
+| Scenario simulator | Needs V2 implementation |
+| Credit/policy contract | Existing scaffold; V2 policy alignment required |
+| Evidence backend | Not complete |
+| Dashboard | Not complete |
+| CC3 testnet E2E | Not complete |
+| Security hardening | Not complete |
+| Reliability/observability | Not complete |
+| Ideathon demo | Not complete |
+| Final release audit | Not complete |
 
 ## V2 implementation order
 
