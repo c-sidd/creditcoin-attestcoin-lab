@@ -68,8 +68,8 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 | Source event contract | Tested | Code compiles and all Hardhat unit tests pass |
 | Creditcoin ASC integration | Tested | ASC contract compiles and all Hardhat unit tests pass |
 | Business/decision contract | Tested | Policy contract compiles and all Hardhat unit tests pass |
-| Readability worker | Implemented | PersistenceManager and WorkerState machine structured |
-| Proof Builder integration | Implemented | ProofBuilderClient implemented using @gluwa/usc-sdk |
+| Readability worker | Tested | Orchestrator and listener pass unit tests with persistence |
+| Proof Builder integration | Tested | ProofBuilderClient passes unit initialization tests |
 | AI decision service | Not implemented | Schema/model tests required |
 | Evidence backend | Not implemented | API/database tests required |
 | Dashboard | Not implemented | End-to-end evidence view required |
