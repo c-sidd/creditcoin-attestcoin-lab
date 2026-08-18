@@ -73,7 +73,7 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 | AI decision service | Not implemented | Schema/model tests required |
 | Evidence backend | Not implemented | API/database tests required |
 | Dashboard | Not implemented | End-to-end evidence view required |
-| Local integration | Not implemented | Full integration test required |
+| Local integration | Tested | Full integration test passes (Source -> ASC -> Policy Contract) |
 | CC3 testnet E2E | Not implemented | Sepolia + CC3 transaction hashes required |
 | Security hardening | Not implemented | Negative-test matrix required |
 | Reliability/observability | Not implemented | Failure injection/recovery evidence required |
