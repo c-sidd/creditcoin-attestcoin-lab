@@ -70,7 +70,7 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 | Business/decision contract | Tested | Policy contract compiles and all Hardhat unit tests pass |
 | Readability worker | Tested | Orchestrator and listener pass unit tests with persistence |
 | Proof Builder integration | Tested | ProofBuilderClient passes unit initialization tests |
-| AI decision service | Not implemented | Schema/model tests required |
+| AI decision service | Tested | Abstract AIProvider structure and Mock provider tests pass |
 | Evidence backend | Not implemented | API/database tests required |
 | Dashboard | Not implemented | End-to-end evidence view required |
 | Local integration | Tested | Full integration test passes (Source -> ASC -> Policy Contract) |
