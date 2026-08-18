@@ -2,47 +2,75 @@
 
 ## Dashboard goal
 
-The dashboard should make the protocol visible. A judge should not need to inspect terminal logs to understand why an action happened.
+The dashboard is an evidence-first explanation of the complete trust pipeline. A judge should be able to understand what was observed, what was cryptographically verified, what the AI concluded, what deterministic risk checks produced, and what the Creditcoin contract finally allowed.
 
 ## Main screen
 
 Show:
 
-- Total events processed.
-- Verified events.
-- AI decisions.
-- Executed decisions.
-- Failed/retryable jobs.
-- Latest source transaction.
-- Latest Creditcoin transaction.
+- total source events;
+- verified facts;
+- active processing jobs;
+- AI/risk decisions;
+- policy accepts/rejects;
+- executed actions;
+- retryable failures;
+- latest source transaction;
+- latest Attestcoin verification transaction;
+- latest Creditcoin execution transaction.
 
 ## Evidence detail page
 
-For one `evidenceId`, show:
+For one `evidenceId` show:
 
 ```text
-Source
-  chain
-  contract
-  tx hash
+SOURCE
+  source chain
+  source contract
+  transaction hash
   block
-  event type
+  event/log
 
-Attestcoin
+ATTESTCOIN
   attestation status
   proof status
-  verification tx
-  gas used
+  verification transaction
+  verification result
 
-AI
-  model version
-  score
-  decision
-  reason codes
+VERIFIED FACT
+  exact verified fields
+  provenance
+  verification timestamp
 
-Execution
-  action
-  Creditcoin tx hash
+FINANCIAL PROFILE
+  collateral
+  liabilities
+  repayment history
+  utilization
+  exposure
+  deterministic metrics
+
+AI AGENTS
+  analyst output
+  risk output
+  anomaly output
+  credit output
+  policy-agent output
+  model/agent versions
+
+SIMULATION
+  scenario inputs
+  formula/version
+  result
+
+POLICY
+  action requested
+  bounds checked
+  accept/reject
+  rejection reason if applicable
+
+EXECUTION
+  Creditcoin transaction hash
   final status
 ```
 
@@ -50,7 +78,7 @@ Execution
 
 ### `GET /api/health`
 
-Returns service health and configured environment name.
+Returns service health and configured environment name without exposing secrets.
 
 ### `GET /api/events`
 
@@ -66,25 +94,45 @@ Returns chronological processing stages.
 
 ### `POST /api/ai/decisions/:evidenceId`
 
-Triggers/retries AI processing for an already verified fact. Must refuse unverified evidence.
+Runs/retries multi-agent analysis for an already verified fact. Must refuse unverified evidence.
 
 ### `GET /api/decisions/:evidenceId`
 
 Returns the structured decision and execution status.
 
+### `GET /api/risk/:evidenceId`
+
+Returns deterministic risk metrics and the current risk interpretation.
+
+### `POST /api/risk/:evidenceId/simulate`
+
+Runs an explicit deterministic scenario. It must not mutate on-chain state.
+
 ## Frontend states
 
-- Loading.
-- Waiting for source event.
-- Waiting for attestation.
-- Generating proof.
-- Verifying.
-- AI reasoning.
-- Executing.
-- Completed.
-- Retryable error.
-- Final failure.
+- Loading
+- Waiting for source event
+- Waiting for attestation
+- Generating proof
+- Verifying
+- Building verified profile
+- Running financial analyst
+- Running risk agent
+- Running anomaly agent
+- Running credit agent
+- Running policy agent
+- Running deterministic policy checks
+- Executing
+- Completed
+- Review required
+- Retryable error
+- Final failure
 
-## UX rule
+## UX rules
 
-Do not present AI output as proof. Label protocol verification and AI reasoning as separate stages.
+1. Never present AI output as proof.
+2. Clearly separate `Observed`, `Verified`, `AI`, `Policy`, and `Executed`.
+3. Show evidence IDs and transaction hashes.
+4. Show when a provider/model is mocked.
+5. Never expose secrets.
+6. Do not provide a UI control that bypasses Attestcoin verification or the decision contract.
