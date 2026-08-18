@@ -2,41 +2,79 @@
 
 ## Track
 
-**AI** — with a strong cross-chain infrastructure component.
+**AI** — with Attestcoin as the essential cross-chain verification infrastructure and Creditcoin as the enforcement layer.
 
 ## 30-second pitch
 
-**ProofMind is an AI decision engine that refuses to reason over unverified cross-chain data. Attestcoin proves a source-chain event on Creditcoin using cryptographic proofs; ProofMind then gives that verified fact to an AI agent, which produces a bounded decision that a Creditcoin smart contract can execute. In short: Attestcoin proves what happened, AI decides what it means, and the blockchain enforces what happens next.**
+**ProofMind is an Attestcoin-powered cross-chain credit and risk intelligence system. A borrower may have important financial history on other chains, but a centralized API should not be the root of trust for a credit decision. ProofMind uses Attestcoin to verify selected cross-chain facts, builds a verified financial profile, uses specialized AI agents plus deterministic risk analysis to understand that profile, and sends only a bounded intent to a Creditcoin smart contract that independently enforces the policy.**
 
 ## Problem
 
-AI systems are increasingly used to automate decisions, but the data supplied to those systems may come from centralized APIs or unverified cross-chain feeds. If the input is wrong, an intelligent model can make a very confident wrong decision.
+Credit decisions become difficult when relevant collateral, debt, repayment and liquidation information is fragmented across blockchains. The application needs both:
+
+1. trustworthy cross-chain evidence; and
+2. useful interpretation of heterogeneous financial signals.
+
+A model alone cannot solve the first problem, while fixed rules alone can become brittle when many signals must be interpreted together.
 
 ## Solution
 
-ProofMind creates a trust pipeline:
+```text
+Cross-chain financial activity
+        ↓
+Attestcoin verification
+        ↓
+Verified financial profile
+        ↓
+Deterministic risk + scenarios
+        ↓
+Multi-agent AI
+        ↓
+Bounded policy intent
+        ↓
+Creditcoin smart contract
+        ↓
+Allowed execution / rejection
+```
 
-`Cross-chain event → Attestcoin proof → verified fact → AI reasoning → deterministic policy → on-chain action`
+## Why AI matters
+
+AI is not used to verify the blockchain evidence. It interprets verified, structured financial information across several dimensions and produces a bounded recommendation with reason codes.
+
+Specialized agents:
+
+- Financial Analyst;
+- Risk Agent;
+- Fraud/Anomaly Agent;
+- Credit Agent;
+- Policy Agent.
+
+Deterministic formulas remain responsible for measurable metrics and hard limits.
+
+## Why Attestcoin matters
+
+Without the Attestcoin verification boundary, the system would be relying on ordinary application/RPC observations for a cross-chain financial claim. Attestcoin is therefore part of the trust model, not a decorative integration.
 
 ## Why Creditcoin matters
 
-Creditcoin is not just the place where we deploy a token or dashboard. The Attestcoin Protocol is part of the core application path: its readability mechanism verifies source-chain transaction data before the AI decision is allowed to influence application state.
+Creditcoin is the destination execution and policy environment. The final business contract independently validates the proposed action and enforces limits, freshness, authorization and replay protection.
 
 ## Differentiation
 
-1. **Proof before intelligence:** AI never decides whether the underlying cross-chain fact is authentic.
-2. **Autonomous but bounded:** the AI can trigger a permitted action, but cannot execute arbitrary calls.
-3. **Auditable:** source transaction, proof verification, AI decision, and execution can be linked by one evidence ID.
-4. **Protocol-native:** Attestcoin is essential to the product, not a decorative integration.
+1. **Proof before intelligence** — AI receives verified facts, not raw untrusted cross-chain claims.
+2. **Multi-agent financial reasoning** — different analytical responsibilities are separated.
+3. **Deterministic safety boundary** — model output cannot bypass on-chain policy.
+4. **Scenario-aware decisions** — explicit stress scenarios can change a recommendation.
+5. **Auditable evidence chain** — source transaction, proof verification, agent outputs and Creditcoin execution are linked.
 
-## Judging moment
+## Strongest judging moment
 
-The strongest live moment is when the dashboard changes from **Verified** to **AI Decision** to **Executed**, while the audience can inspect the source and Creditcoin transaction hashes.
+Show a source-chain event, then visibly move through:
 
-## One-line slogan
+**Verified → Financial Profile → Risk → AI Recommendation → Policy Accepted → Creditcoin Executed**
 
-**ProofMind: Prove the data. Let AI reason. Let the chain enforce.**
+Then replay the same intent and show the contract reject it.
 
-## Expansion
+## Closing line
 
-The same architecture can support verified DeFi risk, RWA eligibility, DePIN incentives, and gaming state—without changing the core trust boundary.
+> **“Attestcoin proves the financial evidence. AI understands the risk. Creditcoin enforces the decision.”**
