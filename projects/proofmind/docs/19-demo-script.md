@@ -2,58 +2,144 @@
 
 ## Demo objective
 
-Show one complete cross-chain AI decision in 3–5 minutes without requiring the audience to understand every implementation detail.
+Show one complete **cross-chain credit-risk decision** in 3–5 minutes and make the role of Attestcoin, AI and Creditcoin unmistakable.
 
 ## Before the demo
 
-- Contracts deployed on testnet.
+- Source contract deployed to the selected testnet.
+- Creditcoin contracts deployed.
 - Worker running.
-- AI service healthy.
+- Proof Builder path verified.
+- AI provider healthy or deterministic mock prepared.
 - Dashboard open.
 - Test wallet funded.
-- Known-good source transaction scenario prepared.
-- Backup evidence ID available in case a live RPC/provider fails.
+- Known-good source scenario prepared.
+- Backup evidence ID available.
+- Explorer links prepared.
 
-## Scene 1 — Problem
+## Scene 1 — The problem
 
-Say: **“We do not want AI to decide based on data we merely received from an API. We first prove the cross-chain fact, then let AI reason over it.”**
+Say:
 
-## Scene 2 — Source transaction
+> **“A Creditcoin credit decision may need financial history that exists on another chain. An API can tell us what it saw, but we want the cross-chain fact itself to be verified before AI reasons over it.”**
 
-Submit the source-chain transaction and show the event in the source explorer/logs.
+Show the source-chain financial event.
 
-Point out the unique event name and the exact data fields that will be carried across.
+## Scene 2 — Attestcoin proves the evidence
 
-## Scene 3 — Attestcoin processing
+Trigger the source event and show:
 
-Show the dashboard changing:
+```text
+Observed
+  ↓
+Attestation
+  ↓
+Proof ready
+  ↓
+ASC verification
+  ↓
+VerifiedFact
+```
 
-`Detected → Waiting for attestation → Proof ready → Verifying`
+Explain that the worker's RPC observation is not itself trusted financial evidence.
 
-Explain that the worker handles the operational complexity automatically.
+## Scene 3 — Build the financial profile
 
-## Scene 4 — Verification
+Show the dashboard extracting verified fields such as:
 
-Show the Creditcoin verification transaction. Explain that the ASC uses the verifier precompile to validate the source transaction proofs before application logic consumes the data.
+- collateral;
+- liabilities;
+- repayment history;
+- liquidation history;
+- utilization/exposure.
 
-## Scene 5 — AI
+Then show deterministic metrics.
 
-Show the verified fact entering the AI service. Display the structured decision and reason codes.
+## Scene 4 — Multi-agent analysis
 
-Emphasize: **“The model is reasoning over verified evidence, not deciding whether the evidence is authentic.”**
+Show the five logical agents:
 
-## Scene 6 — On-chain action
+```text
+Financial Analyst
+       ↓
+Risk Agent
+       ↓
+Fraud/Anomaly Agent
+       ↓
+Credit Agent
+       ↓
+Policy Agent
+```
 
-Show the decision contract accepting the bounded action and emitting `DecisionExecuted`.
+Show a structured result such as:
 
-## Scene 7 — Close
+```text
+Risk: LOW
+Score: 23
+Recommended limit: 5,000
+Scenario: SAFE
+```
 
-Return to the evidence timeline and show the entire chain of custody.
+Emphasize:
 
-### Closing line
+> **“The AI is not deciding whether the blockchain evidence is authentic. It is reasoning over evidence that has already crossed the Attestcoin verification boundary.”**
 
-**“ProofMind separates truth from intelligence: Attestcoin proves what happened, AI decides what it means, and Creditcoin enforces what is allowed to happen next.”**
+## Scene 5 — Scenario simulation
 
-## Failure demo
+Run one deterministic scenario, e.g. collateral falls by 30%.
 
-If a second transaction is available, intentionally submit a duplicate and show replay protection. This is a strong security demonstration if the happy path is already complete.
+Show the result changing from `SAFE` to `REVIEW` if the configured formula requires it.
+
+Explain that this is an explicit hypothetical calculation, not an AI prediction of market prices.
+
+## Scene 6 — Smart-contract enforcement
+
+Submit the bounded intent.
+
+Show the Creditcoin contract checking:
+
+- authorized caller;
+- verified evidence;
+- freshness;
+- replay protection;
+- allowed action;
+- amount/risk bounds;
+- expiry.
+
+Then show `Executed` or `Rejected`.
+
+## Scene 7 — Evidence timeline
+
+Return to the evidence page:
+
+```text
+Source event
+   ↓
+Attestation
+   ↓
+Proof
+   ↓
+VerifiedFact
+   ↓
+Financial profile
+   ↓
+AI agents
+   ↓
+Risk/simulation
+   ↓
+Policy
+   ↓
+Creditcoin execution
+```
+
+## Closing line
+
+> **“Attestcoin proves the financial evidence, AI understands the risk, deterministic policy controls the recommendation, and Creditcoin enforces what is actually allowed.”**
+
+## Security bonus scene
+
+If time permits, submit the same intent twice. Show that replay protection rejects the second execution.
+
+## Demo rule
+
+Never present a mocked proof or mocked verification as a live cryptographic protocol result. If any component is mocked, label it visibly.
