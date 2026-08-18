@@ -1,49 +1,79 @@
 # 03 — Solution
 
-## Overview
+## Product direction
 
-ProofMind implements a four-stage trust pipeline:
+ProofMind is an **Attestcoin-powered cross-chain AI credit and risk intelligence system**. The MVP demonstrates how verified financial information originating on another chain can become a bounded credit/risk recommendation and, only when deterministic policy permits it, an on-chain Creditcoin action.
 
-### Stage 1 — Prove the fact
+## Four trust stages
 
-A minimal source-chain contract emits an unambiguous event containing the fields required by the application. The worker watches that contract.
+### Stage 1 — Observe and prove
 
-### Stage 2 — Verify the fact on Creditcoin
+A minimal source-chain contract emits a specific financial event. The worker observes it, waits for the required attestation state, obtains the documented proofs, and submits them through the Attestcoin Readability path.
 
-After the source block is attested, the worker obtains Merkle and continuity proofs and calls the Attestcoin Smart Contract. The ASC invokes the documented Block Prover/Native Query Verifier precompile and extracts the verified transaction/event data.
+An RPC observation is not trusted application data.
 
-### Stage 3 — Reason over verified data
+### Stage 2 — Verify on Creditcoin
 
-The backend creates a canonical `VerifiedFact` object. The AI receives that object rather than raw RPC data. The model returns a strict decision such as `ALLOW`, `REVIEW`, or `REJECT`, together with a confidence score, reason codes, and recommended bounded action.
+The Attestcoin Smart Contract uses the documented verifier/precompile flow to validate the source-chain evidence. Only after successful verification may the application create a canonical `VerifiedFact` containing provenance.
 
-### Stage 4 — Enforce the decision
+### Stage 3 — Understand verified financial data
 
-A Creditcoin decision contract checks that the request is authorized, not replayed, correctly formatted, and within configured limits. Only then does it update application state or execute the permitted action.
+The backend builds a `FinancialProfile` from verified facts and deterministic metrics. Specialized logical agents then operate on that verified profile:
 
-## MVP architecture principle
+1. Financial Analyst — normalization and observations.
+2. Risk Agent — risk interpretation.
+3. Fraud/Anomaly Agent — unusual-pattern detection.
+4. Credit Agent — bounded credit recommendation.
+5. Policy Agent — machine-readable execution intent.
 
-Keep the source contract and AI service simple. Put the protocol-critical verification in the ASC and put deterministic business rules in the Creditcoin decision contract.
+AI is an interpretation layer, not the source of truth.
 
-## Example decision
+### Stage 4 — Enforce on Creditcoin
 
-```json
-{
-  "decision": "ALLOW",
-  "score": 82,
-  "reasonCodes": ["VERIFIED_ACTIVITY", "LOW_RISK_PATTERN"],
-  "action": "APPROVE_LIMIT",
-  "limit": "1000000000000000000",
-  "evidenceId": "ev_001"
-}
+A deterministic Creditcoin business/decision contract independently checks authorization, supported action, evidence freshness, replay protection, score/risk bounds, amount limits and expiry before any state transition.
+
+## Deterministic companion engine
+
+The system calculates measurable metrics outside the model where formulas are known, such as collateral ratio, utilization, debt exposure, concentration and explicit scenario outcomes. Model reasoning may interpret these signals but must not silently replace their formulas.
+
+## End-to-end MVP
+
+```text
+Source-chain financial event
+        ↓
+Readability worker
+        ↓
+Attestation + proof generation
+        ↓
+Attestcoin verification
+        ↓
+VerifiedFact
+        ↓
+FinancialProfile
+        ↓
+Deterministic risk engine
+        ↓
+Scenario simulation
+        ↓
+Multi-agent AI
+        ↓
+Schema + policy validation
+        ↓
+Bounded transaction intent
+        ↓
+Creditcoin decision/business contract
+        ↓
+Allowed execution OR rejection
 ```
-
-The exact numeric meaning and units must be defined by the deployed business logic; the AI must never invent a new action name.
 
 ## Trust model
 
-- Source-chain event authenticity: Attestcoin proofs.
-- Decision reasoning: AI model.
-- Decision validity: schema + deterministic policy contract.
-- Final state: Creditcoin blockchain.
+- **Attestcoin:** establishes cross-chain evidence provenance.
+- **VerifiedFact:** creates the application trust boundary after verification.
+- **AI:** interprets verified information and proposes a bounded action.
+- **Deterministic risk/policy:** controls measurable constraints.
+- **Creditcoin contract:** is the final authority for the state transition.
 
-This division is central to the product and must remain visible in the UI and demo.
+## Important boundary
+
+The multi-agent architecture, risk formulas, thresholds, decision schema and UX are **Project Design**. They must not be represented as Creditcoin protocol guarantees.
