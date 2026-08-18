@@ -57,7 +57,7 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 
 | Milestone | Status | Completion evidence |
 |---|---|---|
-| Repository reconnaissance | Complete for planning | Repository/reference inspection |
+| Repository reconnaissance | Complete | Artifact reconnaissance_report.md created |
 | Documentation specification | Complete | `docs/32-completeness-audit.md` |
 | Implementation rules | Complete | `IMPLEMENTATION_RULES.md` |
 | Protocol interface verification | Complete for planning | `docs/33-protocol-interface-verification-2026-08-18.md` |
