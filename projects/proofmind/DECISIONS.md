@@ -46,13 +46,11 @@ A small end-to-end flow that works repeatedly is preferred over multiple partial
 
 ## D011 — Optimize for hackathon quality before AI cost
 
-**Decision:** During the ideathon build, AI inference cost is not the primary optimization target. Use the strongest suitable currently available OpenAI model accessible to the project as the primary provider, subject to API availability and structured-output support.
+During the ideathon build, AI inference cost is not the primary optimization target. Use the strongest suitable currently available OpenAI model accessible to the project as the primary provider, subject to API availability and structured-output support.
 
 **Fallback:** Groq + Llama may be supported through the same provider abstraction.
 
-**Reason:** ProofMind's competitive value depends on strong reasoning, clear explanations, reliable structured decisions, and a convincing verified-data-to-blockchain demo. Cost optimization can be addressed after a reliable end-to-end flow exists.
-
-**Constraint:** The exact model identifier must be verified against the current provider API before implementation. Do not hard-code or invent a model identifier based only on the name "Luna".
+**Constraint:** The exact model identifier must be verified against the current provider API before implementation. Do not invent a model identifier based only on a product nickname.
 
 ## D012 — AI provider must be replaceable
 
@@ -60,4 +58,22 @@ AI provider SDKs must not leak throughout the application. The decision engine u
 
 ## D013 — Environment configuration is explicit
 
-Every runtime dependency must be represented in `.env.example`, documented in `docs/24-environment-variables.md`, and validated at startup. Secrets must never be committed or exposed to the browser.
+Every runtime dependency must be represented in `.env.example`, documented in the environment documentation, and validated at startup. Secrets must never be committed or exposed to the browser.
+
+## D014 — V2 is multi-agent credit/risk intelligence, not a generic AI decision engine
+
+**Decision:** The primary ProofMind product is an Attestcoin-powered cross-chain credit and risk intelligence system.
+
+The logical AI roles are Financial Analyst, Risk Agent, Fraud/Anomaly Agent, Credit Agent and Policy Agent. They operate on verified facts and deterministic financial metrics. They do not need five independent model servers in the MVP.
+
+**Reason:** This gives AI a substantive role beyond simply formatting one verified event. It also creates a clearer relationship between Attestcoin verification, financial reasoning and Creditcoin enforcement.
+
+**Constraint:** Deterministic metrics, policy thresholds, action allowlists, replay protection, expiry and authorization remain outside the model's authority and are enforced independently.
+
+## D015 — Scenario simulation is deterministic
+
+Scenario analysis evaluates explicit hypothetical inputs using versioned formulas/policies. It is not represented as an LLM prediction of future market prices and does not mutate on-chain state.
+
+## D016 — VerifiedFact is the AI input boundary
+
+The model layer consumes canonical `VerifiedFact`/`FinancialProfile` objects only. Raw RPC observations, arbitrary API values and client claims cannot be promoted to verified facts without the documented Attestcoin verification path.
