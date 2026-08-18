@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
+import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 
 describe("SourceSignalEmitter", function () {
   it("emits a risk signal and rejects duplicate signal IDs", async function () {
@@ -30,7 +31,3 @@ describe("SourceSignalEmitter", function () {
       .to.be.revertedWithCustomError(emitter, "InvalidSubject");
   });
 });
-
-function anyValue() {
-  return true;
-}
