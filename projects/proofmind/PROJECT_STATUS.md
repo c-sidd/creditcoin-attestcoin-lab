@@ -66,7 +66,7 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 | Evidence framework | Complete | `evidence/README.md` + E2E template |
 | Project Scaffold | Complete | Directory structure and README placeholders created |
 | Source event contract | Tested | Code compiles and all Hardhat unit tests pass |
-| Creditcoin ASC integration | Implemented | ASC contract compiles successfully with viaIR |
+| Creditcoin ASC integration | Tested | ASC contract compiles and all Hardhat unit tests pass |
 | Business/decision contract | Not implemented | Contract tests + deployment evidence required |
 | Readability worker | Not implemented | Persistent state/retry tests required |
 | Proof Builder integration | Not implemented | Real request/response evidence required |
