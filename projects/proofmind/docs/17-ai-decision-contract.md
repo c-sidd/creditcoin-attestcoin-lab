@@ -2,71 +2,103 @@
 
 ## Purpose
 
-The AI decision contract is the deterministic enforcement layer after model inference. It turns a model response into a permitted blockchain state transition only when every rule passes.
+This contract is the deterministic enforcement boundary between ProofMind's AI/risk recommendation and Creditcoin state changes.
+
+The AI does **not** authorize itself. It produces a bounded proposal. The contract independently validates the proposal against on-chain policy and the referenced verified evidence.
 
 ## Inputs
 
-- `evidenceId`
-- `decision`
-- `score`
-- `action`
-- `limit`
-- `modelVersion`
-- `deadline`
-- optional decision nonce/signature depending on the chosen backend design
+Conceptual project-design inputs:
+
+- one or more `evidenceId` values;
+- decision enum;
+- risk level/score;
+- recommended credit limit;
+- supported action;
+- model version;
+- decision expiry/deadline;
+- nonce/replay identifier;
+- optional backend signature if the selected architecture requires it.
+
+These are ProofMind interfaces, not Creditcoin protocol interfaces.
 
 ## Validation sequence
 
 ```text
 caller authorized?
-      ↓ yes
- evidence verified?
-      ↓ yes
- evidence already executed?
-      ↓ no
- decision enum valid?
-      ↓ yes
- action compatible?
-      ↓ yes
- score in range?
-      ↓ yes
- limit in range?
-      ↓ yes
- deadline valid?
-      ↓ yes
- execute
+      ↓
+evidence exists and is verified?
+      ↓
+evidence fresh enough?
+      ↓
+evidence/intent already executed?
+      ↓
+decision enum valid?
+      ↓
+action allowlisted?
+      ↓
+risk score in configured range?
+      ↓
+credit limit within configured bounds?
+      ↓
+deadline valid?
+      ↓
+application invariants pass?
+      ↓
+execute allowed state transition
 ```
+
+Any failed condition must revert or enter the documented non-execution state.
 
 ## Action allowlist
 
-For MVP keep the action vocabulary tiny:
+For MVP keep the vocabulary deliberately small:
 
 - `NO_ACTION`
-- `APPROVE_LIMIT`
+- `PROPOSE_CREDIT`
 - `FLAG_REVIEW`
 
-Do not expose arbitrary contract calls to the AI.
+Do not expose arbitrary target addresses, function selectors, calldata or generic `execute(target,data)` functionality to the AI.
 
 ## Policy example
 
 ```text
-ALLOW + APPROVE_LIMIT → limit <= MAX_LIMIT
-REVIEW + FLAG_REVIEW → record review state only
-REJECT + NO_ACTION → record rejection
+APPROVE_WITH_LIMIT + PROPOSE_CREDIT
+    → limit <= MAX_CREDIT_LIMIT
+    → risk score satisfies configured threshold
+    → evidence is fresh
+
+REVIEW + FLAG_REVIEW
+    → record review state only
+
+REJECT + NO_ACTION
+    → record rejection
 ```
+
+The actual thresholds are Project Design and must be defined in configuration/tests before deployment.
 
 ## Replay protection
 
-Maintain a mapping such as:
-
-`executed[evidenceId] = true`
-
-Set it only after all checks pass and before/atomically with the state transition as appropriate for the implementation.
+Use a canonical evidence/intent identity and reject an already executed identity. The worker may also maintain off-chain idempotency state, but on-chain replay protection remains authoritative.
 
 ## AI signature option
 
-If the architecture requires the backend to authorize execution separately from the public AI API, use a dedicated signing key and verify the signature on-chain. The signature proves authorization by the backend; it does not prove that the AI was correct. Attestcoin remains the data-authenticity layer.
+If a backend signature is used, it proves that the configured backend authorized submission. It does **not** prove that the model was correct. Attestcoin remains the cross-chain evidence trust boundary and the smart contract remains the final policy authority.
 
-## Event
+## Events
 
-Emit a structured event after successful execution so the worker/backend/dashboard can reconcile final state.
+Emit structured events sufficient for the backend/dashboard to reconcile:
+
+- evidence/intent identity;
+- accepted/rejected policy result;
+- action;
+- bounded amount where applicable;
+- final execution state.
+
+## Security rules
+
+- Never trust model prose.
+- Never accept an unverified evidence ID.
+- Never allow arbitrary contract calls.
+- Never skip expiry or replay checks.
+- Never make provider availability an authorization condition.
