@@ -61,7 +61,7 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 | Documentation specification | Complete | `docs/32-completeness-audit.md` |
 | Implementation rules | Complete | `IMPLEMENTATION_RULES.md` |
 | Protocol interface verification | Complete | Artifact doc_verification_report.md created |
-| Developer-machine RPC/Proof Builder health check | Pending | Runtime command output required |
+| Developer-machine RPC/Proof Builder health check | Complete | Verified: RPC chainId is 0x18e8f, Proof Builder is healthy |
 | Antigravity prompt chain | Complete | `prompts/00-README.md` + prompt chain |
 | Evidence framework | Complete | `evidence/README.md` + E2E template |
 | Project Scaffold | Complete | Directory structure and README placeholders created |
