@@ -67,7 +67,7 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 | Project Scaffold | Complete | Directory structure and README placeholders created |
 | Source event contract | Tested | Code compiles and all Hardhat unit tests pass |
 | Creditcoin ASC integration | Tested | ASC contract compiles and all Hardhat unit tests pass |
-| Business/decision contract | Not implemented | Contract tests + deployment evidence required |
+| Business/decision contract | Tested | Policy contract compiles and all Hardhat unit tests pass |
 | Readability worker | Not implemented | Persistent state/retry tests required |
 | Proof Builder integration | Not implemented | Real request/response evidence required |
 | AI decision service | Not implemented | Schema/model tests required |
