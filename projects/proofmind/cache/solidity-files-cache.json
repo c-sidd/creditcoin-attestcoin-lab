@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "D:\\korea\\creditcoin-attestcoin-lab\\projects\\proofmind\\contracts\\source-chain\\SourceSignalEmitter.sol": {
+      "lastModificationDate": 1787070065506,
+      "contentHash": "a29e9af469bf082784ac23b128c45fa6",
+      "sourceName": "contracts/source-chain/SourceSignalEmitter.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "SourceSignalEmitter"
+      ]
+    }
+  }
+}

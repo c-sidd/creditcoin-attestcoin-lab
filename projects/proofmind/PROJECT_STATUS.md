@@ -65,7 +65,7 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 | Antigravity prompt chain | Complete | `prompts/00-README.md` + prompt chain |
 | Evidence framework | Complete | `evidence/README.md` + E2E template |
 | Project Scaffold | Complete | Directory structure and README placeholders created |
-| Source event contract | Not implemented | Sepolia deployment + event tx required |
+| Source event contract | Implemented | Code compiles successfully with Hardhat |
 | Creditcoin ASC integration | Not implemented | Verified Creditcoin test transaction required |
 | Business/decision contract | Not implemented | Contract tests + deployment evidence required |
 | Readability worker | Not implemented | Persistent state/retry tests required |
