@@ -1,31 +1,50 @@
 # ProofMind — Project Status
 
 ## Purpose
-This is the operational status board for ProofMind. Documentation, implementation, and evidence are intentionally tracked separately.
+
+Operational status board. Documentation, implementation and runtime evidence are tracked separately.
+
+## Current product direction
+
+**V2 — Attestcoin-Powered Cross-Chain AI Credit & Risk Intelligence**
+
+Primary story:
+
+```text
+Attestcoin = verified cross-chain evidence
+AI = financial interpretation
+Risk/simulation = deterministic controls
+Creditcoin contract = final enforcement
+```
+
+The multi-agent design is documented in `docs/PRODUCT_DIRECTION_V2.md` and `docs/09-ai-agent.md`.
 
 ## Current state
 
+- V2 product direction: **defined**.
 - Documentation foundation: **complete**.
 - Antigravity prompt-chain control plane: **complete** under `prompts/`.
 - Evidence framework/templates: **complete** under `evidence/`.
-- Implementation rules: **complete** under `IMPLEMENTATION_RULES.md`.
-- Creditcoin/Attestcoin protocol interface verification: **complete for Milestone 1 planning**; see `docs/33-protocol-interface-verification-2026-08-18.md`.
-- Developer-machine live RPC/Proof Builder health check: **pending** because the current analysis runtime cannot perform outbound RPC POST/DNS requests.
-- Existing tutorial/reference implementation: preserved under `examples/usc-testnet-bridge-examples` as a reference submodule.
-- ProofMind implementation: **not yet started for the new implementation phase**.
-- Complete Sepolia → Attestcoin → AI → Creditcoin testnet execution: **not yet proven by committed evidence**.
+- Implementation rules: **complete**.
+- Protocol interface verification for the planned first milestone: **complete** according to the repository's recorded verification artifact.
+- Existing tutorial/reference implementation: **preserved** under `examples/usc-testnet-bridge-examples`.
+- Existing source/ASC/policy/worker/AI scaffolding: **present and partially tested**.
+- New V2 end-to-end implementation: **not yet proven**.
+- Complete Sepolia → Attestcoin → profile → multi-agent AI → policy → Creditcoin execution: **not yet proven by committed testnet evidence**.
 
 ## Source-of-truth hierarchy
 
 1. Official Creditcoin documentation and current published protocol references.
 2. Existing official Creditcoin tutorial/reference implementation.
-3. Current `@gluwa/usc-sdk` package and its documented interfaces.
-4. ProofMind documents for project-specific architecture and product decisions.
-5. Code and tests as the executable implementation of those decisions.
+3. Current SDK/documented interfaces actually verified by the project.
+4. ProofMind product/design documents for project-specific decisions.
+5. Code/tests as executable implementation.
 
-If these disagree, do not silently guess. Stop at the boundary, inspect the current reference, and record a decision in `DECISIONS.md`.
+Never silently convert a project assumption into a protocol fact.
 
 ## Verified Milestone-1 protocol boundary
+
+The current recorded testnet planning values are documented in `docs/33-protocol-interface-verification-2026-08-18.md` and must be rechecked if Creditcoin publishes changes.
 
 ```text
 Source chain: Ethereum Sepolia
@@ -40,52 +59,58 @@ ChainInfo precompile: 0x0000000000000000000000000000000000000FD3
 SDK: @gluwa/usc-sdk 0.18.0
 ```
 
-Important: the Sepolia source-chain key is **1** for the current CC3 Testnet reference flow. Do not confuse it with Ethereum's EVM chain ID `11155111`.
+These are environment/reference values, not ProofMind business rules.
 
 ## Implementation gates
 
-Every milestone requires all four:
+Every milestone requires:
 
 1. implementation exists;
 2. automated tests pass;
 3. documentation/status is updated;
-4. evidence exists when the milestone requires runtime/deployment proof.
+4. required runtime evidence exists.
 
-Mocks may prove isolated component behavior but cannot satisfy a real protocol/testnet gate.
+Mocks can prove isolated application behavior but cannot satisfy a real Attestcoin/testnet protocol gate.
 
 ## Milestone status
 
-| Milestone | Status | Completion evidence |
+| Area | Status | Required evidence |
 |---|---|---|
-| Repository reconnaissance | Complete | Artifact reconnaissance_report.md created |
-| Documentation specification | Complete | `docs/32-completeness-audit.md` |
-| Implementation rules | Complete | `IMPLEMENTATION_RULES.md` |
-| Protocol interface verification | Complete | Artifact doc_verification_report.md created |
-| Developer-machine RPC/Proof Builder health check | Complete | Verified: RPC chainId is 0x18e8f, Proof Builder is healthy |
-| Antigravity prompt chain | Complete | `prompts/00-README.md` + prompt chain |
-| Evidence framework | Complete | `evidence/README.md` + E2E template |
-| Project Scaffold | Complete | Directory structure and README placeholders created |
-| Source event contract | Tested | Code compiles and all Hardhat unit tests pass |
-| Creditcoin ASC integration | Tested | ASC contract compiles and all Hardhat unit tests pass |
-| Business/decision contract | Tested | Policy contract compiles and all Hardhat unit tests pass |
-| Readability worker | Tested | Orchestrator and listener pass unit tests with persistence |
-| Proof Builder integration | Tested | ProofBuilderClient passes unit initialization tests |
-| AI decision service | Tested | Abstract AIProvider structure and Mock provider tests pass |
-| Evidence backend | Not implemented | API/database tests required |
-| Dashboard | Not implemented | End-to-end evidence view required |
-| Local integration | Tested | Full integration test passes (Source -> ASC -> Policy Contract) |
-| CC3 testnet E2E | Not implemented | Sepolia + CC3 transaction hashes required |
-| Security hardening | Not implemented | Negative-test matrix required |
-| Reliability/observability | Not implemented | Failure injection/recovery evidence required |
-| Ideathon demo | Not implemented | Rehearsed real/recorded evidence flow required |
-| Final audit/release freeze | Not implemented | Final audit PASS + reproducible release required |
+| Product/problem definition | Complete | `docs/PRODUCT_DIRECTION_V2.md` |
+| Architecture/trust boundaries | Complete | architecture + decision docs |
+| Protocol interface verification | Complete for planning | verification artifact |
+| Source event contract | Existing/tested | contract tests + deployment evidence |
+| Attestcoin ASC integration | Existing/tested in scaffold | protocol tests + real testnet evidence |
+| Readability worker | Existing/tested in scaffold | restart/retry + real proof evidence |
+| AI provider abstraction | Existing/tested | provider and schema tests |
+| Multi-agent V2 orchestration | Needs implementation alignment | agent tests + integrated verified-data test |
+| Deterministic risk engine | Needs V2 implementation | formula/unit tests |
+| Scenario simulator | Needs V2 implementation | deterministic scenario tests |
+| Credit/policy contract | Existing/tested scaffold; V2 policy alignment required | contract negative tests + deployment |
+| Evidence backend | Not complete | API/database tests |
+| Dashboard | Not complete | full evidence timeline |
+| Local integration | Existing/tested scaffold | regression evidence |
+| CC3 testnet E2E | Not complete | Sepolia + Attestcoin + Creditcoin transaction hashes |
+| Security hardening | Not complete | negative-test matrix |
+| Reliability/observability | Not complete | failure injection/recovery evidence |
+| Ideathon demo | Not complete | rehearsed real evidence flow |
+| Final release audit | Not complete | clean-checkout/reproducible release |
 
-## Current implementation blocker
+## V2 implementation order
 
-The protocol-specific planning boundary is no longer blocked by unknown endpoint, chain-key, SDK, or precompile information.
-
-The next runtime gate is to execute the public CC3 Testnet RPC health/chain-ID check and Proof Builder health check from the developer machine, then proceed to implementation. The exact commands and expected results are recorded in `docs/33-protocol-interface-verification-2026-08-18.md`.
+1. Freeze event + VerifiedFact schema.
+2. Align source/ASC/decision contracts with the V2 data contract.
+3. Align worker state machine.
+4. Implement deterministic risk engine.
+5. Implement scenario simulator.
+6. Implement multi-agent orchestration behind the existing provider abstraction.
+7. Connect schema validation to policy contract.
+8. Finish evidence backend.
+9. Finish dashboard.
+10. Execute real CC3 testnet E2E.
+11. Run security/reliability matrix.
+12. Freeze demo/release.
 
 ## Completion rule
 
-Never mark a milestone complete because code exists or because an AI agent claims success. Mark it complete only when its documented acceptance criteria, executed tests, and required runtime evidence are present.
+Never mark a milestone complete because code exists or an AI coding agent says it is complete. Completion requires the documented acceptance criteria, executed tests and required runtime evidence.
