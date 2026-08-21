@@ -17,7 +17,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 - [x] Prompt 08 — ASC Contract Tests
 - [x] Prompt 09 — Business/Decision Contract
 - [x] Prompt 10 — Contract Integration
-- [/] Prompt 11 — Proof Builder Integration
+- [x] Prompt 11 — Proof Builder Integration
+- [/] Prompt 12 — Worker Foundation
 
 ## Prompt Completion Tracker
 
@@ -33,7 +34,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 | 08 | ASC tests | COMPLETE | Verified verification/revert paths with stateless mock BlockProver |
 | 09 | Business/decision contract | COMPLETE | Implemented ProofMindDecision contract with policy validation |
 | 10 | Contract integration | COMPLETE | Wrote integration test verifying complete cross-chain signal/attestation/decision sequence |
-| 11 | Proof Builder integration | IN_PROGRESS | Developing typed Proof Builder client utilizing @gluwa/usc-sdk |
+| 11 | Proof Builder integration | COMPLETE | Implemented ProofBuilderClient wrapper and validation tests |
+| 12 | Worker foundation | IN_PROGRESS | Developing off-chain worker foundation with persistent state and lifecycle |
 
 ## Component Map
 
