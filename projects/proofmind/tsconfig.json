@@ -9,5 +9,5 @@
     "rootDir": ".",
     "types": ["mocha"]
   },
-  "include": ["worker/src/**/*", "worker/tests/**/*", "backend/src/**/*"]
+  "include": ["worker/src/**/*", "worker/tests/**/*", "backend/src/**/*", "backend/tests/**/*"]
 }
