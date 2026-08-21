@@ -19,7 +19,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 - [x] Prompt 10 — Contract Integration
 - [x] Prompt 11 — Proof Builder Integration
 - [x] Prompt 12 — Worker Foundation
-- [/] Prompt 13 — Worker Event Monitoring
+- [x] Prompt 13 — Worker Event Monitoring
+- [/] Prompt 14 — Worker Attestation
 
 ## Prompt Completion Tracker
 
@@ -37,7 +38,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 | 10 | Contract integration | COMPLETE | Wrote integration test verifying complete cross-chain signal/attestation/decision sequence |
 | 11 | Proof Builder integration | COMPLETE | Implemented ProofBuilderClient wrapper and validation tests |
 | 12 | Worker foundation | COMPLETE | Implemented ProofMindWorker class, logging, and atomic file JobStore |
-| 13 | Worker event monitoring | IN_PROGRESS | Implementing source-chain event polling and catch-up mechanism |
+| 13 | Worker event monitoring | COMPLETE | Implemented EventListener for polling RiskSignalSubmitted logs and tracking scanned block |
+| 14 | Worker attestation | IN_PROGRESS | Implementing attestation waiting stage with status updates and persistence |
 
 ## Component Map
 
