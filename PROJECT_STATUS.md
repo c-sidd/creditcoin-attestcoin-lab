@@ -18,7 +18,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 - [x] Prompt 09 — Business/Decision Contract
 - [x] Prompt 10 — Contract Integration
 - [x] Prompt 11 — Proof Builder Integration
-- [/] Prompt 12 — Worker Foundation
+- [x] Prompt 12 — Worker Foundation
+- [/] Prompt 13 — Worker Event Monitoring
 
 ## Prompt Completion Tracker
 
@@ -35,7 +36,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 | 09 | Business/decision contract | COMPLETE | Implemented ProofMindDecision contract with policy validation |
 | 10 | Contract integration | COMPLETE | Wrote integration test verifying complete cross-chain signal/attestation/decision sequence |
 | 11 | Proof Builder integration | COMPLETE | Implemented ProofBuilderClient wrapper and validation tests |
-| 12 | Worker foundation | IN_PROGRESS | Developing off-chain worker foundation with persistent state and lifecycle |
+| 12 | Worker foundation | COMPLETE | Implemented ProofMindWorker class, logging, and atomic file JobStore |
+| 13 | Worker event monitoring | IN_PROGRESS | Implementing source-chain event polling and catch-up mechanism |
 
 ## Component Map
 
