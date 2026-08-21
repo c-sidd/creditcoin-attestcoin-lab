@@ -1,0 +1,30 @@
+{
+  "network": "hardhat",
+  "chainId": 31337,
+  "timestamp": "2026-08-21T20:29:20.129Z",
+  "contracts": {
+    "SourceSignalEmitter": {
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "txHash": "0xc792bf0c916534fb4ae68d82bde49b33bdebd7972d2ee684749ddcda30e99954",
+      "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+    },
+    "ProofMindAttestcoin": {
+      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      "txHash": "0x7862015d67ae47334e266d2f9f8ea9cac716245d80a0323f8a399bc2a83b8695",
+      "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+      "constructorArgs": [
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      ]
+    },
+    "ProofMindDecision": {
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "txHash": "0x59c8233c7f20ecb4bc75600629b8b3b8b2587ed512d888a25fb1eb06b1e5c9f7",
+      "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+      "constructorArgs": [
+        "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+        "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+      ],
+      "aiSigner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+    }
+  }
+}

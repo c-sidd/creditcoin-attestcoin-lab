@@ -28,24 +28,46 @@ export class SyncService {
       let subject = ethers.ZeroAddress;
       let signalValue = 0;
 
-      // Try decoding the source event payload from encodedData
-      try {
-        if (job.encodedData && !job.encodedData.startsWith("{")) {
-          const decoded = ethers.AbiCoder.defaultAbiCoder().decode(
-            ["bytes32", "address", "uint256"],
-            job.encodedData
-          );
-          signalId = decoded[0];
-          subject = decoded[1];
-          signalValue = Number(decoded[2]);
-        }
-      } catch (err: any) {
-        console.warn(`[SyncService] Failed to decode payload for job ${job.id}:`, err.message);
-      }
+      // Check if this job already exists to preserve the original source_event_id
+      const existingJob = await this.db.get<{ source_event_id: string }>(
+        "SELECT source_event_id FROM processing_jobs WHERE id = ?",
+        [job.id]
+      );
 
-      // If we don't have a valid signalId, use a fallback deterministic hash of job.id
-      if (signalId === ethers.zeroPadValue("0x00", 32)) {
-        signalId = ethers.keccak256(ethers.toUtf8Bytes(job.id));
+      if (existingJob) {
+        signalId = existingJob.source_event_id;
+        // Fetch subject and signalValue from source_events if we need them
+        const existingEvent = await this.db.get<{ decoded_payload: string }>(
+          "SELECT decoded_payload FROM source_events WHERE id = ?",
+          [signalId]
+        );
+        if (existingEvent) {
+          try {
+            const parsed = JSON.parse(existingEvent.decoded_payload);
+            subject = parsed.subject;
+            signalValue = parsed.signalValue;
+          } catch {}
+        }
+      } else {
+        // Try decoding the source event payload from encodedData
+        try {
+          if (job.encodedData && !job.encodedData.startsWith("{")) {
+            const decoded = ethers.AbiCoder.defaultAbiCoder().decode(
+              ["bytes32", "address", "uint256"],
+              job.encodedData
+            );
+            signalId = decoded[0];
+            subject = decoded[1];
+            signalValue = Number(decoded[2]);
+          }
+        } catch (err: any) {
+          console.warn(`[SyncService] Failed to decode payload for job ${job.id}:`, err.message);
+        }
+
+        // If we don't have a valid signalId, use a fallback deterministic hash of job.id
+        if (signalId === ethers.zeroPadValue("0x00", 32)) {
+          signalId = ethers.keccak256(ethers.toUtf8Bytes(job.id));
+        }
       }
 
       // 1. Sync source_events

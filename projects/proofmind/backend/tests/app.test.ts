@@ -153,4 +153,18 @@ describe("Backend API End-to-End Route Tests", () => {
     expect(res.body.decision).to.equal("REJECT");
     expect(res.body).to.have.property("signature");
   });
+
+  it("should simulate a new event emission through /api/demo/submit-event", async () => {
+    const res = await request(app)
+      .post("/api/demo/submit-event")
+      .send({
+        subject: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        signalValue: 45
+      })
+      .expect(201);
+
+    expect(res.body).to.have.property("message", "Event simulated successfully");
+    expect(res.body).to.have.property("signalId");
+    expect(res.body).to.have.property("transactionHash");
+  });
 });

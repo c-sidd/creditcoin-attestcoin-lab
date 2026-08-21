@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { ethers } from "ethers";
+import path from "path";
+import fs from "fs";
 import { loadConfig } from "../../worker/src/config";
 import { Database } from "./database/db";
 import { SyncService } from "./services/sync";
@@ -10,6 +12,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.resolve(__dirname, "../../dashboard/public")));
 
 // Initialize Database & Services lazily
 let db: Database;
@@ -245,6 +248,59 @@ app.get(["/api/decisions/:evidenceId", "/api/executions/:evidenceId"], asyncHand
     modelVersion: decision.model_metadata,
     policyStatus: decision.policy_status,
     createdAt: decision.created_at
+  });
+}));
+
+// POST /api/demo/submit-event (Simulates emitting a cross-chain event and running it through the pipeline)
+app.post("/api/demo/submit-event", asyncHandler(async (req: Request, res: Response) => {
+  const database = await getDB();
+  const { subject, signalValue } = req.body;
+
+  if (!subject || typeof signalValue !== "number") {
+    return res.status(400).json({ error: { message: "Invalid parameters. Required: subject (address), signalValue (number).", status: 400 } });
+  }
+
+  const signalId = ethers.hexlify(ethers.randomBytes(32));
+  const txHash = ethers.hexlify(ethers.randomBytes(32));
+  
+  // Read and update the mock jobs JSON file
+  const jsonDbPath = "proofmind_jobs.json";
+  let jobs: any[] = [];
+  if (fs.existsSync(jsonDbPath)) {
+    try {
+      jobs = JSON.parse(fs.readFileSync(jsonDbPath, "utf-8"));
+    } catch {}
+  }
+
+  const newJob = {
+    id: `1_200_${txHash}_0`,
+    chainKey: 1,
+    contractAddress: config.sourceContractAddress,
+    transactionHash: txHash,
+    blockNumber: 200,
+    logIndex: 0,
+    eventName: "RiskSignalSubmitted",
+    encodedData: ethers.AbiCoder.defaultAbiCoder().encode(
+      ["bytes32", "address", "uint256"],
+      [signalId, subject, signalValue]
+    ),
+    status: "EXECUTED",
+    attempts: 1,
+    ascTxHash: ethers.hexlify(ethers.randomBytes(32)),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+
+  jobs.push(newJob);
+  fs.writeFileSync(jsonDbPath, JSON.stringify(jobs, null, 2), "utf-8");
+
+  // Sync to SQLite db
+  await syncService.sync();
+
+  res.status(201).json({
+    message: "Event simulated successfully",
+    signalId,
+    transactionHash: txHash
   });
 }));
 

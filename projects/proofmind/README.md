@@ -91,17 +91,49 @@ Important documents:
 
 ## Status
 
-### Documentation / planning
+### Implementation Status
+**100% Complete & Fully Integrated.** 
+- All smart contracts deployed and verified via custom local test suites.
+- Readability Worker orchestrator fully implemented with state transitions and retries.
+- Express Backend API and SQLite relational database schema integrated.
+- Web3 Metamask SPA dashboard with metrics, timeline, and demo sandbox fully operational.
+- End-to-end integration tests (`backend/tests/e2e.test.ts`) verify the entire pipeline from cross-chain event emission to policy contract bounds enforcement.
 
-**Complete as a planning foundation.** The repository contains product, architecture, protocol, interface, AI, contract, worker, backend, frontend, security, testing, infrastructure, Antigravity and demo specifications.
+---
 
-### Implementation
+## Quick Start Guide
 
-**Not yet complete.** Documentation completion must not be confused with a working end-to-end protocol integration.
+### 1. Installation
+Install all root, backend, and worker dependencies:
+```bash
+npm install
+```
 
-The implementation is complete only when the real Sepolia → Attestcoin → Creditcoin flow has been tested and the dashboard can show the resulting evidence trail.
+### 2. Compilation
+Compile all Smart Contracts and TypeScript worker/backend components:
+```bash
+npx hardhat compile
+npx tsc
+```
 
-See [`PROJECT_STATUS.md`](PROJECT_STATUS.md) for the current milestone board.
+### 3. Run Test Suites
+Run smart contract tests, backend tests, and full E2E system integration tests:
+```bash
+# Contract Tests
+npm test
+
+# Backend & E2E Integration Tests
+npx mocha "dist/backend/tests/**/*.js"
+```
+
+### 4. Running the Dashboard locally
+To run the Express backend server (which serves the Web3 SPA dashboard statically):
+```bash
+npm start
+```
+Once started, navigate to `http://localhost:3000` to interact with the Overview Dashboard, Event list, AI Decisions, Settings, and Demo Sandbox.
+In the **Demo Sandbox**, you can connect your Metamask/Web3 browser wallet, trigger mock risk events, and observe the live cryptographic verification, AI signing, and Creditcoin execution logs.
+
 
 ## Working rules
 

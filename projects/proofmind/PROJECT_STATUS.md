@@ -72,7 +72,7 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 | Proof Builder integration | Tested | ProofBuilderClient passes unit initialization tests |
 | AI decision service | Tested | Abstract AIProvider structure and Mock provider tests pass |
 | Evidence backend | Tested | SQLite schema, sync/decision services, and Express API tests pass |
-| Dashboard | Not implemented | End-to-end evidence view required |
+| Dashboard | Tested | SPA dashboard with metrics, timeline, and demo sandbox views implemented and tested |
 | Local integration | Tested | Full integration test passes (Source -> ASC -> Policy Contract) |
 | CC3 testnet E2E | Not implemented | Sepolia + CC3 transaction hashes required |
 | Security hardening | Not implemented | Negative-test matrix required |
