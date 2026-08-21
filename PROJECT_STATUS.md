@@ -21,7 +21,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 - [x] Prompt 12 — Worker Foundation
 - [x] Prompt 13 — Worker Event Monitoring
 - [x] Prompt 14 — Worker Attestation
-- [/] Prompt 15 — Worker Proof Generation
+- [x] Prompt 15 — Worker Proof Generation
+- [/] Prompt 16 — Worker ASC Submission
 
 ## Prompt Completion Tracker
 
@@ -41,7 +42,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 | 12 | Worker foundation | COMPLETE | Implemented ProofMindWorker class, logging, and atomic file JobStore |
 | 13 | Worker event monitoring | COMPLETE | Implemented EventListener for polling RiskSignalSubmitted logs and tracking scanned block |
 | 14 | Worker attestation | COMPLETE | Implemented AttestationManager and status tracking for block attestation |
-| 15 | Worker proof generation | IN_PROGRESS | Integrating ProofBuilderClient inside the worker workflow |
+| 15 | Worker proof generation | COMPLETE | Implemented ProofManager to coordinate retrieval and validation of proofs |
+| 16 | Worker ASC submission | IN_PROGRESS | Developing submission manager to submit verified proofs to Creditcoin ASC |
 
 ## Component Map
 
