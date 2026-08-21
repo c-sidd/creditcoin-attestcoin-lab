@@ -14,7 +14,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 - [x] Prompt 05 — Source Contract Tests
 - [x] Prompt 06 — Creditcoin Environment
 - [x] Prompt 07 — Attestcoin Smart Contract
-- [/] Prompt 08 — ASC Contract Tests
+- [x] Prompt 08 — ASC Contract Tests
+- [/] Prompt 09 — Business/Decision Contract
 
 ## Prompt Completion Tracker
 
@@ -27,7 +28,8 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 | 05 | Source contract tests | COMPLETE | Verified comprehensive test matrix covering initial state, reverts, events, and boundary conditions |
 | 06 | Creditcoin environment | COMPLETE | Created typescript configuration and URL validation layer |
 | 07 | ASC contract | COMPLETE | Implemented ProofMindAttestcoin calling verifier and EvmV1Decoder |
-| 08 | ASC tests | IN_PROGRESS | Developing mock verifier and test matrix for proof validation |
+| 08 | ASC tests | COMPLETE | Verified verification/revert paths with stateless mock BlockProver |
+| 09 | Business/decision contract | IN_PROGRESS | Developing ProofMindDecision contract with policy validation |
 
 ## Component Map
 
