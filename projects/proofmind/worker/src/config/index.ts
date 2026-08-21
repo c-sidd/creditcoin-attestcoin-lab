@@ -39,8 +39,8 @@ export function loadConfig(): Config {
   };
 
   const aiProvider = getEnv("AI_PROVIDER", true).toLowerCase();
-  if (aiProvider !== "groq" && aiProvider !== "openai") {
-    throw new Error(`Configuration Error: AI_PROVIDER must be either 'groq' or 'openai'`);
+  if (aiProvider !== "groq" && aiProvider !== "openai" && aiProvider !== "mock") {
+    throw new Error(`Configuration Error: AI_PROVIDER must be either 'groq', 'openai' or 'mock'`);
   }
 
   const groqApiKey = process.env.GROQ_API_KEY;

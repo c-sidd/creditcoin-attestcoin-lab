@@ -71,7 +71,7 @@ Mocks may prove isolated component behavior but cannot satisfy a real protocol/t
 | Readability worker | Tested | Orchestrator and listener pass unit tests with persistence |
 | Proof Builder integration | Tested | ProofBuilderClient passes unit initialization tests |
 | AI decision service | Tested | Abstract AIProvider structure and Mock provider tests pass |
-| Evidence backend | Partial | Express app shell setup and health API tested |
+| Evidence backend | Tested | SQLite schema, sync/decision services, and Express API tests pass |
 | Dashboard | Not implemented | End-to-end evidence view required |
 | Local integration | Tested | Full integration test passes (Source -> ASC -> Policy Contract) |
 | CC3 testnet E2E | Not implemented | Sepolia + CC3 transaction hashes required |
