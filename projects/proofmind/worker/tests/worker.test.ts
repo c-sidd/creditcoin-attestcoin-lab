@@ -3,11 +3,53 @@ import { JobStore, JobRecord } from "../src/persistence";
 import fs from "fs";
 import path from "path";
 
-describe("Worker Lifecycle & Persistence Tests", () => {
-  const tempStorageDir = path.join(__dirname, "../dist/test-evidence");
+// Mock ethers provider and wallet
+const mockGetBlockNumber = jest.fn().mockResolvedValue(100);
+const mockQueryFilter = jest.fn().mockResolvedValue([]);
+
+jest.mock("ethers", () => {
+  const original = jest.requireActual("ethers");
+  
+  class MockProvider {
+    getBlockNumber = mockGetBlockNumber;
+    destroy = jest.fn();
+  }
+
+  class MockWallet {
+    constructor() {}
+  }
+
+  class MockContract {
+    filters = {
+      RiskSignalSubmitted: jest.fn()
+    };
+    queryFilter = mockQueryFilter;
+    verifiedFacts = jest.fn().mockResolvedValue([0, original.ethers.ZeroAddress, 0, 0, false]);
+    submitProof = Object.assign(
+      jest.fn().mockResolvedValue({
+        hash: "0xtx",
+        wait: jest.fn().mockResolvedValue({ status: 1 })
+      }),
+      { estimateGas: jest.fn().mockResolvedValue(50000n) }
+    );
+    constructor() {}
+  }
+
+  return {
+    ...original,
+    ethers: {
+      ...original.ethers,
+      JsonRpcProvider: MockProvider,
+      Wallet: MockWallet,
+      Contract: MockContract
+    }
+  };
+});
+
+describe("Worker Integrated Orchestrator Tests", () => {
+  const tempStorageDir = path.join(__dirname, "../dist/test-worker-evidence");
 
   beforeEach(() => {
-    // Clean up test database directory
     if (fs.existsSync(tempStorageDir)) {
       fs.rmSync(tempStorageDir, { recursive: true, force: true });
     }
@@ -45,18 +87,19 @@ describe("Worker Lifecycle & Persistence Tests", () => {
     const unfinished = store.getUnfinishedJobs();
     expect(unfinished.length).toBe(1);
 
-    // Update job status to EXECUTED
     job.status = "EXECUTED";
     store.saveJob(job);
     expect(store.getUnfinishedJobs().length).toBe(0);
   });
 
-  it("should initialize, report config, start and stop the worker lifecycle", async () => {
-    // Setup env vars so config validates successfully
+  it("should run complete worker loop cycle and graceful shutdown", async () => {
     process.env.SEPOLIA_RPC_URL = "http://localhost:8545";
     process.env.CREDITCOIN_RPC_URL = "https://rpc.cc3-testnet.creditcoin.network";
     process.env.PROOF_BUILDER_URL = "https://prover.cc3-testnet.creditcoin.network";
     process.env.EVIDENCE_DIR = tempStorageDir;
+    process.env.SOURCE_CONTRACT_ADDRESS = "0xsourceContract";
+    process.env.CREDITCOIN_PRIVATE_KEY = "0x0123456789012345678901234567890123456789012345678901234567890123";
+    process.env.ASC_CONTRACT_ADDRESS = "0xascContract";
 
     const worker = new ProofMindWorker();
     

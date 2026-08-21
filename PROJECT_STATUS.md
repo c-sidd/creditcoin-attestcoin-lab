@@ -22,7 +22,10 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 - [x] Prompt 13 — Worker Event Monitoring
 - [x] Prompt 14 — Worker Attestation
 - [x] Prompt 15 — Worker Proof Generation
-- [/] Prompt 16 — Worker ASC Submission
+- [x] Prompt 16 — Worker ASC Submission
+- [x] Prompt 17 — Retry, Idempotency and Recovery
+- [x] Prompt 18 — Worker Test Suite
+- [/] Prompt 19 — AI Service Foundation
 
 ## Prompt Completion Tracker
 
@@ -43,7 +46,10 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 | 13 | Worker event monitoring | COMPLETE | Implemented EventListener for polling RiskSignalSubmitted logs and tracking scanned block |
 | 14 | Worker attestation | COMPLETE | Implemented AttestationManager and status tracking for block attestation |
 | 15 | Worker proof generation | COMPLETE | Implemented ProofManager to coordinate retrieval and validation of proofs |
-| 16 | Worker ASC submission | IN_PROGRESS | Developing submission manager to submit verified proofs to Creditcoin ASC |
+| 16 | Worker ASC submission | COMPLETE | Implemented SubmissionManager with gas estimation and on-chain idempotency checks |
+| 17 | Retry, idempotency, and recovery | COMPLETE | Wired all sub-managers in worker and verified atomic loop recovery |
+| 18 | Worker test suite | COMPLETE | Added comprehensive unit tests and E2E mock checks for worker daemon |
+| 19 | AI Service foundation | IN_PROGRESS | Developing provider-agnostic AI decision engine interface and fake provider |
 
 ## Component Map
 
