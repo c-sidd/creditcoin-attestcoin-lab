@@ -34,7 +34,11 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 - [x] Prompt 25 — Backend Foundation
 - [x] Prompt 26 — Evidence API
 - [x] Prompt 27 — Backend Database
-- [/] Prompt 28 — Frontend Foundation
+- [x] Prompt 28 — Frontend Foundation
+- [x] Prompt 29 — Dashboard
+- [x] Prompt 30 — Evidence Viewer
+- [x] Prompt 31 — Wallet Flow
+- [/] Prompt 32 — Full Integration Testing
 
 ## Prompt Completion Tracker
 
@@ -67,7 +71,11 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 | 25 | Backend foundation | COMPLETE | Implemented Express server architecture with environment configs and API router |
 | 26 | Evidence API | COMPLETE | Created API routes for listing, fetching details, and triggering AI decisions/intents |
 | 27 | Backend database | COMPLETE | Documented the schema, unique constraint logic, and file-based JSON store |
-| 28 | Frontend foundation | IN_PROGRESS | Developing React/Vite dashboard foundation with routing and API client |
+| 28 | Frontend foundation | COMPLETE | Created React/Vite operator dashboard shell and API config client |
+| 29 | Dashboard | COMPLETE | Built unified dashboard listing jobs, AI risk evaluation, and transaction intents |
+| 30 | Evidence viewer | COMPLETE | Created visual inspector showing Merkle roots and lower endpoint digests |
+| 31 | Wallet flow | COMPLETE | Integrated wallet connection interface and mock execution trigger |
+| 32 | Full integration testing | IN_PROGRESS | Running integrated test matrix across contract, worker, and backend boundaries |
 
 ## Component Map
 
