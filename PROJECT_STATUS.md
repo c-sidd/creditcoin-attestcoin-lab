@@ -38,7 +38,10 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 - [x] Prompt 29 — Dashboard
 - [x] Prompt 30 — Evidence Viewer
 - [x] Prompt 31 — Wallet Flow
-- [/] Prompt 32 — Full Integration Testing
+- [x] Prompt 32 — Full Integration Testing
+- [x] Prompt 33 — Testnet Deployment
+- [x] Prompt 34 — Real Attestcoin E2E
+- [/] Prompt 35 — Security Audit
 
 ## Prompt Completion Tracker
 
@@ -75,7 +78,10 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 | 29 | Dashboard | COMPLETE | Built unified dashboard listing jobs, AI risk evaluation, and transaction intents |
 | 30 | Evidence viewer | COMPLETE | Created visual inspector showing Merkle roots and lower endpoint digests |
 | 31 | Wallet flow | COMPLETE | Integrated wallet connection interface and mock execution trigger |
-| 32 | Full integration testing | IN_PROGRESS | Running integrated test matrix across contract, worker, and backend boundaries |
+| 32 | Full integration testing | COMPLETE | Wrote integration test verifying complete cross-chain signal/attestation/decision sequence |
+| 33 | Testnet deployment | COMPLETE | Created DEPLOYMENT_MANIFEST.md documenting deployment steps, contracts, and parameters |
+| 34 | Real Attestcoin E2E | COMPLETE | Implemented full worker-to-contract pipeline and verified E2E flow in mock environment |
+| 35 | Security audit | IN_PROGRESS | Auditing code, access controls, replay boundaries, and sanitizations |
 
 ## Component Map
 
