@@ -1,6 +1,6 @@
-# ProofMind Testnet Deployment Manifest
+# ProofMind Deployment Manifest
 
-This manifest documents the deployment configurations, contract addresses, dependencies, and environment configurations for the ProofMind E2E cross-chain system on CC3 Testnet.
+This manifest describes the network configuration used by the ProofMind demo. **The addresses and hashes below are intentionally not presented as live deployment evidence.** A real CC3 Testnet deployment must be recorded only after the contracts are deployed and independently verified on-chain.
 
 ## Network Configurations
 
@@ -9,36 +9,37 @@ This manifest documents the deployment configurations, contract addresses, depen
 | **Chain ID** | `11155111` | `102031` |
 | **Chain Key** | `1` | `102031` |
 | **RPC Endpoint** | `https://rpc.sepolia.org` | `https://rpc.cc3-testnet.creditcoin.network` |
-| **Etherscan/Blockscout** | `https://sepolia.etherscan.io` | `https://scan.cc3-testnet.creditcoin.network` |
+| **Explorer** | `https://sepolia.etherscan.io` | `https://scan.cc3-testnet.creditcoin.network` |
 
-## Deployment Manifest
+## Current Deployment Status
 
-- **Compiler Version**: Solidity `0.8.24` (viaIR enabled, optimizer runs: 200)
-- **Deployment Timestamp**: 2026-08-22T08:00:00Z
-- **Commit SHA**: `ed8d903cd84d33eb93ae2c481d9f8e2bf31da6a`
+**Status: LOCAL / SIMULATED DEMO CONFIGURATION — NOT A LIVE TESTNET DEPLOYMENT**
 
-### Contracts Deployed
+The repository previously contained placeholder-looking addresses and transaction hashes. They have been removed from this manifest so demo configuration cannot be mistaken for real blockchain evidence.
 
-1. **SourceSignalEmitter** (Source Chain)
-   - **Address**: `0xA5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5`
-   - **Transaction Hash**: `0x1111111111111111111111111111111111111111111111111111111111111111`
-   - **Constructor**: None (stateless signal emitter)
+### Contracts
 
-2. **EvmV1Decoder** (Library - Destination Chain)
-   - **Address**: `0x731c345d79Fb8BbDC541f9DF3b6317585F849F9f` (using verified CC3 Testnet library)
+- **SourceSignalEmitter** — deployed/used by local Hardhat simulation only until a real Sepolia deployment is recorded.
+- **EvmV1Decoder** — library dependency used by the destination-chain contract.
+- **ProofMindAttestcoin** — tested locally with the native verifier address replaced by a test mock; no live CC3 deployment is claimed here.
+- **ProofMindDecision** — tested locally as the policy/decision contract; no live CC3 deployment is claimed here.
 
-3. **ProofMindAttestcoin** (ASC Contract - Destination Chain)
-   - **Address**: `0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB`
-   - **Transaction Hash**: `0x2222222222222222222222222222222222222222222222222222222222222222`
-   - **Constructor Args**: `sourceContractAddress: 0xA5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5A5`
+## Required Live Deployment Evidence
 
-4. **ProofMindDecision** (Decision/Policy - Destination Chain)
-   - **Address**: `0xCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC`
-   - **Transaction Hash**: `0x3333333333333333333333333333333333333333333333333333333333333333`
-   - **Constructor Args**: `attestcoinContract: 0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB`
+When a real CC3 Testnet run is completed, update this file with:
+
+1. Real contract addresses.
+2. Real deployment transaction hashes.
+3. Deployment block numbers.
+4. Deployer/oracle addresses where appropriate.
+5. Explorer links for each transaction and contract.
+6. The exact source commit used for deployment.
+7. A successful end-to-end proof submission transaction demonstrating real Attestcoin verification.
 
 ## Role & Authorization Setup
 
 To authorize the AI Oracle backend to submit risk decisions:
-1. Call `setOracleAuthorization(oracleAddress, true)` on `ProofMindDecision` from the contract owner address.
-2. Verify role configuration by querying `authorizedOracles(oracleAddress)` returning `true`.
+
+1. Call `setOracleAuthorization(oracleAddress, true)` on `ProofMindDecision` from the contract owner.
+2. Verify `authorizedOracles(oracleAddress)` returns `true`.
+3. Record the real transaction hash in the live deployment evidence section once deployed.
