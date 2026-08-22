@@ -31,7 +31,10 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 - [x] Prompt 22 — AI Risk Controls
 - [x] Prompt 23 — Transaction Intent
 - [x] Prompt 24 — AI Test Suite
-- [/] Prompt 25 — Backend Foundation
+- [x] Prompt 25 — Backend Foundation
+- [x] Prompt 26 — Evidence API
+- [x] Prompt 27 — Backend Database
+- [/] Prompt 28 — Frontend Foundation
 
 ## Prompt Completion Tracker
 
@@ -61,7 +64,10 @@ This document tracks the execution progress of the ProofMind autonomous implemen
 | 22 | AI Risk controls | COMPLETE | Added AiRiskControls for maximum limits, risk threshold, and gray zones |
 | 23 | Transaction intent | COMPLETE | Developed IntentSerializer to construct typed executeDecision transaction calldata |
 | 24 | AI Tests | COMPLETE | Verified complete AI decision pipeline, validators, and serializers via 21 tests |
-| 25 | Backend foundation | IN_PROGRESS | Developing Express backend API foundation and service layer |
+| 25 | Backend foundation | COMPLETE | Implemented Express server architecture with environment configs and API router |
+| 26 | Evidence API | COMPLETE | Created API routes for listing, fetching details, and triggering AI decisions/intents |
+| 27 | Backend database | COMPLETE | Documented the schema, unique constraint logic, and file-based JSON store |
+| 28 | Frontend foundation | IN_PROGRESS | Developing React/Vite dashboard foundation with routing and API client |
 
 ## Component Map
 
