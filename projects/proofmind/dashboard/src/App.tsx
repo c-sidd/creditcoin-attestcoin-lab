@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
-import { BrowserProvider } from "ethers";
 
 interface EthereumProvider {
   request(args: { method: string; params?: unknown[] }): Promise<any>;
-  on?: (event: string, handler: (...args: any[]) => void) => void;
-  removeListener?: (event: string, handler: (...args: any[]) => void) => void;
 }
 
 declare global {
-  interface Window {
-    ethereum?: EthereumProvider;
-  }
+  interface Window { ethereum?: EthereumProvider; }
 }
 
 interface JobRecord {
@@ -70,18 +65,15 @@ function App() {
       setError("MetaMask/EVM wallet not detected. Using explicitly labeled Simulated Local Demo Mode.");
       return;
     }
-
     try {
       setBusy(true);
-      const provider = new BrowserProvider(window.ethereum as any);
-      await provider.send("eth_requestAccounts", []);
-      const network = await provider.getNetwork();
-      const expected = BigInt(DESTINATION_CHAIN_ID);
-      if (network.chainId !== expected) {
-        throw new Error(`Wrong network. Connected chain is ${network.chainId}; expected ${DESTINATION_CHAIN_ID}.`);
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      const chainId = await window.ethereum.request({ method: "eth_chainId" });
+      const expected = `0x${BigInt(DESTINATION_CHAIN_ID).toString(16)}`;
+      if (String(chainId).toLowerCase() !== expected.toLowerCase()) {
+        throw new Error(`Wrong network. Connected chain is ${chainId}; expected chain ${DESTINATION_CHAIN_ID}.`);
       }
-      const signer = await provider.getSigner();
-      setWalletAddress(await signer.getAddress());
+      setWalletAddress(accounts[0]);
       setWalletMode("REAL");
     } catch (err: any) {
       setWalletMode("SIMULATED");
@@ -117,19 +109,16 @@ function App() {
     setBusy(true);
     setError("");
     setTxHash("");
-
     try {
-      if (walletMode === "REAL" && window.ethereum) {
-        const provider = new BrowserProvider(window.ethereum as any);
-        const network = await provider.getNetwork();
-        if (network.chainId !== BigInt(DESTINATION_CHAIN_ID)) {
+      if (walletMode === "REAL" && window.ethereum && walletAddress) {
+        const chainId = await window.ethereum.request({ method: "eth_chainId" });
+        const expected = `0x${BigInt(DESTINATION_CHAIN_ID).toString(16)}`;
+        if (String(chainId).toLowerCase() !== expected.toLowerCase()) {
           throw new Error(`Wrong network. Switch MetaMask to chain ${DESTINATION_CHAIN_ID}.`);
         }
-        const signer = await provider.getSigner();
-        const from = await signer.getAddress();
         const hash = await window.ethereum.request({
           method: "eth_sendTransaction",
-          params: [{ from, to: aiResponse.transactionIntent.to, data: aiResponse.transactionIntent.data }]
+          params: [{ from: walletAddress, to: aiResponse.transactionIntent.to, data: aiResponse.transactionIntent.data }]
         });
         setTxHash(hash);
       } else {
@@ -174,10 +163,7 @@ function App() {
           <div className="space-y-3">
             {jobs.length === 0 ? <p className="text-xs text-slate-500">No evidence records found.</p> : jobs.map((job) => (
               <button key={job.event_id} onClick={() => { setSelectedJob(job); setAiResponse(null); setTxHash(""); }} className={`w-full text-left p-3 rounded-xl border ${selectedJob?.event_id === job.event_id ? "border-indigo-500 bg-slate-800" : "border-slate-800 bg-slate-950/50"}`}>
-                <div className="flex justify-between gap-3 text-xs font-mono">
-                  <span>{job.transaction_hash.slice(0, 12)}...</span>
-                  <span className={statusClass(job.status)}>{job.status}</span>
-                </div>
+                <div className="flex justify-between gap-3 text-xs font-mono"><span>{job.transaction_hash.slice(0, 12)}...</span><span className={statusClass(job.status)}>{job.status}</span></div>
                 <div className="text-[11px] text-slate-500 mt-2">Block #{job.block_number} · ChainKey {job.chain_key}</div>
               </button>
             ))}
@@ -185,36 +171,34 @@ function App() {
         </section>
 
         <section className="lg:col-span-2 space-y-6">
-          {selectedJob ? (
-            <>
-              <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
-                <h2 className="text-sm font-bold text-slate-400 mb-4">EVIDENCE INSPECTOR</h2>
-                <div className="grid md:grid-cols-2 gap-4 text-xs font-mono">
-                  <div><span className="text-slate-500 block">Source Contract</span>{selectedJob.contract_address}</div>
-                  <div><span className="text-slate-500 block">Source Transaction</span>{selectedJob.transaction_hash}</div>
-                  <div><span className="text-slate-500 block">Event ID</span>{selectedJob.event_id}</div>
-                  <div><span className="text-slate-500 block">Block</span>{selectedJob.block_number}</div>
-                </div>
-                <button disabled={busy || selectedJob.status !== "EXECUTED"} onClick={() => runAiDecision(selectedJob)} className="mt-5 bg-indigo-600 disabled:bg-slate-700 rounded-lg px-4 py-2 text-xs font-semibold">
-                  {busy ? "Working..." : "Evaluate AI Decision"}
-                </button>
-                {selectedJob.status !== "EXECUTED" && <p className="text-xs text-amber-400 mt-3">AI is locked until the worker confirms on-chain Attestcoin verification.</p>}
+          {selectedJob ? <>
+            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
+              <h2 className="text-sm font-bold text-slate-400 mb-4">EVIDENCE INSPECTOR</h2>
+              <div className="grid md:grid-cols-2 gap-4 text-xs font-mono">
+                <div><span className="text-slate-500 block">Source Contract</span>{selectedJob.contract_address}</div>
+                <div><span className="text-slate-500 block">Source Transaction</span>{selectedJob.transaction_hash}</div>
+                <div><span className="text-slate-500 block">Event ID</span>{selectedJob.event_id}</div>
+                <div><span className="text-slate-500 block">Block</span>{selectedJob.block_number}</div>
               </div>
+              <button disabled={busy || selectedJob.status !== "EXECUTED"} onClick={() => runAiDecision(selectedJob)} className="mt-5 bg-indigo-600 disabled:bg-slate-700 rounded-lg px-4 py-2 text-xs font-semibold">
+                {busy ? "Working..." : "Evaluate AI Decision"}
+              </button>
+              {selectedJob.status !== "EXECUTED" && <p className="text-xs text-amber-400 mt-3">AI is locked until the worker confirms on-chain Attestcoin verification.</p>}
+            </div>
 
-              {aiResponse && <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-5">
-                <h2 className="text-sm font-bold text-slate-400">AI RISK EVALUATION</h2>
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="p-4 bg-slate-950/60 rounded-xl"><span className="text-[10px] text-slate-500 block">AI DECISION</span><b>{aiResponse.recommendation.decision}</b></div>
-                  <div className="p-4 bg-slate-950/60 rounded-xl"><span className="text-[10px] text-slate-500 block">RISK SCORE</span><b>{aiResponse.recommendation.score}/100</b></div>
-                  <div className="p-4 bg-slate-950/60 rounded-xl"><span className="text-[10px] text-slate-500 block">POLICY</span><b>{aiResponse.policyOutcome.admissible ? "ADMISSIBLE" : "REJECTED"}</b></div>
-                </div>
-                <p className="text-xs text-slate-400">{aiResponse.policyOutcome.reason}</p>
-                {aiResponse.transactionIntent && <button disabled={busy} onClick={submitTransactionIntent} className="bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 rounded-lg px-4 py-2 text-xs font-semibold">{walletMode === "REAL" ? "Sign & Execute with MetaMask" : "Run Simulated Demo Execution"}</button>}
-                {txHash && <div className="p-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-xs font-mono break-all">{walletMode === "REAL" ? `Submitted transaction: ${txHash}` : `Simulated transaction: ${txHash}`}</div>}
-                <div className="text-[11px] text-slate-500">Provider: {aiResponse.metadata.provider} · Model: {aiResponse.metadata.model}</div>
-              </div>}
-            </>
-          ) : <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-10 text-center text-sm text-slate-500">Select an evidence record to inspect it.</div>}
+            {aiResponse && <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-5">
+              <h2 className="text-sm font-bold text-slate-400">AI RISK EVALUATION</h2>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="p-4 bg-slate-950/60 rounded-xl"><span className="text-[10px] text-slate-500 block">AI DECISION</span><b>{aiResponse.recommendation.decision}</b></div>
+                <div className="p-4 bg-slate-950/60 rounded-xl"><span className="text-[10px] text-slate-500 block">RISK SCORE</span><b>{aiResponse.recommendation.score}/100</b></div>
+                <div className="p-4 bg-slate-950/60 rounded-xl"><span className="text-[10px] text-slate-500 block">POLICY</span><b>{aiResponse.policyOutcome.admissible ? "ADMISSIBLE" : "REJECTED"}</b></div>
+              </div>
+              <p className="text-xs text-slate-400">{aiResponse.policyOutcome.reason}</p>
+              {aiResponse.transactionIntent && <button disabled={busy} onClick={submitTransactionIntent} className="bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 rounded-lg px-4 py-2 text-xs font-semibold">{walletMode === "REAL" ? "Sign & Execute with MetaMask" : "Run Simulated Demo Execution"}</button>}
+              {txHash && <div className="p-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-xs font-mono break-all">{walletMode === "REAL" ? `Submitted transaction: ${txHash}` : `Simulated transaction: ${txHash}`}</div>}
+              <div className="text-[11px] text-slate-500">Provider: {aiResponse.metadata.provider} · Model: {aiResponse.metadata.model}</div>
+            </div>}
+          </> : <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-10 text-center text-sm text-slate-500">Select an evidence record to inspect it.</div>}
         </section>
       </div>
     </main>
