@@ -13,7 +13,6 @@ const router = Router();
 const config = loadConfig();
 const jobStore = new BackendJobStore(config.evidenceDir);
 
-// 1. Initialize AI pipeline components
 let aiProvider;
 if (process.env.AI_PROVIDER === "openai" && process.env.OPENAI_API_KEY) {
   aiProvider = new OpenAiCompatibleProvider(
@@ -28,7 +27,6 @@ if (process.env.AI_PROVIDER === "openai" && process.env.OPENAI_API_KEY) {
     process.env.AI_MODEL || "llama-3.3-70b-versatile"
   );
 } else {
-  // Fallback to fake provider
   aiProvider = new FakeAiProvider();
 }
 
@@ -37,7 +35,6 @@ const aiService = new AiDecisionService(aiProvider);
 const riskControls = new AiRiskControls();
 const intentSerializer = new IntentSerializer(config.decisionContractAddress || ethers.ZeroAddress);
 
-// Health Endpoint
 router.get("/health", (req: Request, res: Response) => {
   res.json({
     status: "OK",
@@ -51,56 +48,41 @@ router.get("/health", (req: Request, res: Response) => {
   });
 });
 
-// List Evidence Jobs (with optional status filtering and pagination)
 router.get("/evidence", (req: Request, res: Response) => {
   try {
     const { status, page = "1", limit = "10" } = req.query;
     let jobs = jobStore.getAllJobs();
+    if (status) jobs = jobs.filter((j) => j.status === status);
 
-    if (status) {
-      jobs = jobs.filter((j) => j.status === status);
-    }
-
-    // Pagination
     const p = parseInt(page as string, 10);
     const l = parseInt(limit as string, 10);
     const startIndex = (p - 1) * l;
     const endIndex = p * l;
-
     const paginatedJobs = jobs.slice(startIndex, endIndex);
 
     res.json({
       data: paginatedJobs,
-      pagination: {
-        total: jobs.length,
-        page: p,
-        limit: l,
-        pages: Math.ceil(jobs.length / l)
-      }
+      pagination: { total: jobs.length, page: p, limit: l, pages: Math.ceil(jobs.length / l) }
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// Get Single Evidence Job Details
 router.get("/evidence/:eventId", (req: Request, res: Response) => {
   try {
     const { eventId } = req.params;
     const job = jobStore.getJob(eventId as string);
-
     if (!job) {
       res.status(404).json({ error: `Job with ID ${eventId} not found` });
       return;
     }
-
     res.json(job);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// Process AI Decision & Generate Transaction Intent
 router.post("/evidence/:eventId/decision", async (req: Request, res: Response) => {
   try {
     const { eventId } = req.params;
@@ -111,17 +93,15 @@ router.post("/evidence/:eventId/decision", async (req: Request, res: Response) =
       return;
     }
 
-    // Verify evidence is in executable state (at least proof received or executed)
-    if (job.status !== "EXECUTED" && job.status !== "PROOF_RECEIVED") {
+    // AI may only reason over facts that the worker has confirmed on-chain.
+    if (job.status !== "EXECUTED") {
       res.status(400).json({
-        error: `Evidence status is ${job.status}. AI decision can only be generated for PROOF_RECEIVED or EXECUTED evidence.`
+        error: `Evidence status is ${job.status}. AI decision requires EXECUTED evidence confirmed by Attestcoin.`
       });
       return;
     }
 
     const parsedData = JSON.parse(job.encoded_data);
-
-    // Reconstruct input fact
     const inputFact: VerifiedInputFact = {
       chainKey: job.chain_key,
       transactionHash: job.transaction_hash,
@@ -134,16 +114,10 @@ router.post("/evidence/:eventId/decision", async (req: Request, res: Response) =
       timestamp: Number(parsedData.timestamp)
     };
 
-    // 1. Validate Input Fact
     aiValidator.validate(inputFact);
-
-    // 2. Invoke AI Decision Service
     const recommendation = await aiService.requestDecision(inputFact);
-
-    // 3. Apply Risk Controls
     const policyOutcome = riskControls.evaluate(inputFact, recommendation);
 
-    // 4. Serialize Transaction Intent (if admissible)
     let transactionIntent = null;
     if (policyOutcome.admissible) {
       const evidenceId = ethers.solidityPackedKeccak256(
