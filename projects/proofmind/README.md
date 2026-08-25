@@ -1,99 +1,190 @@
-# ProofMind — Autonomous Credit Risk & Cross-Chain Decision Engine
+# ProofMind — Proof-Carrying Autonomous Finance
 
-ProofMind is a state-of-the-art autonomous credit risk and decision execution platform built on Gluwa's Creditcoin network. It trustlessly reads signals from EVM source chains (e.g. Ethereum Sepolia) via Attestcoin, evaluates the data using a provider-agnostic AI decision engine, and executes policy-compliant risk outcomes (approved credit limits, blocking) securely on-chain.
+> **AI reasons. Attestcoin proves. Smart contracts enforce.**
+
+ProofMind is building a trust layer for autonomous financial decisions on Creditcoin. The first application is verified RWA/credit underwriting: source-chain financial evidence is verified through Attestcoin, an optional AI underwriter proposes a structured decision, and deterministic Creditcoin policy contracts decide whether the financial action can execute.
+
+## 🎯 Current product thesis
+
+```text
+Real-world financial obligation
+            ↓
+       RWA evidence
+            ↓
+   Attestcoin / USC proof
+            ↓
+      Verified facts
+            ↓
+     AI underwriting
+            ↓
+  Proof-carrying decision
+            ↓
+  Deterministic policy
+            ↓
+    Creditcoin execution
+```
+
+The AI is **not** the final authority. The protocol must remain safe when the AI is wrong, unavailable, manipulated, or replaced.
 
 ---
 
-## 🔗 Important Links
+# 📚 Project Knowledge Base
 
-### Hackathon / Judge Strategy
+These folders are the current high-level source of truth for the project strategy. Older exploratory notes may remain elsewhere in the repository for historical context, but new implementation decisions should follow these documents.
 
-- **BUIDL CTC 2026 Fall — YouTube & Judge Analysis:** [youtube-analysis/README.md](./youtube-analysis/README.md)
-- **Official BUIDL CTC:** https://buidl.creditcoin.org/
-- **Official kickoff AMA:** https://www.youtube.com/watch?v=HPL6LjTqQm4
-- **DoraHacks submission:** https://dorahacks.io/hackathon/buidl-ctc-2026-fall/buidl
-- **Attestcoin:** https://attestcoin.org/
-- **Creditcoin documentation:** https://docs.creditcoin.org/
-
-### Benchmark / Reference Projects Analysed
-
-| Project | Repository |
+| Folder | Purpose |
 |---|---|
-| Web3 Analysis Dashboard | https://github.com/Faathirazukhruf/Web3-Analysis-Dashboard |
-| Spark | https://github.com/thesithunyein/spark |
-| AttestDesk | https://github.com/Qidianyan/attestdesk |
-| BountyOps Verified Execution | https://github.com/MathieuDWeill/bountyops-verified-execution |
-| AttestGuard | https://github.com/rudimentall1/AttestGuard |
-| BorrowIQ | https://github.com/Clean-earthw/borrowiq |
-| VeriSettle | https://github.com/anhquan075/verisettle |
-| index41 | https://github.com/edycutjong/index41 |
-| Oracle-Free Council | https://github.com/icohangar-ops/oracle-free-council |
-| CrossCredit | https://github.com/OoJae/crosscredit |
-| MoonCreditFi | https://github.com/Zakariasisu5/Mooncreditfi |
-| ProofYield | https://github.com/darkty0x/proofyield |
-| SnakeAI | https://github.com/snake-ai-agent/SnakeAI |
+| [`01-creditcoin-attestcoin`](./01-creditcoin-attestcoin/) | Current Creditcoin/Attestcoin architecture, proof flow, CC3 facts, current vs legacy APIs |
+| [`02-problem-solution`](./02-problem-solution/) | Real-world problem, RWA + AI + DeFi solution, product thesis and MVP boundaries |
+| [`03-youtube-discussion`](./03-youtube-discussion/) | Kickoff/AMA discussion, official event facts, demo implications and source links |
+| [`04-judging-criteria`](./04-judging-criteria/) | Judge readiness, official track alignment, internal scorecard and evidence checklist |
+| [`05-competitor-analysis`](./05-competitor-analysis/) | Detailed benchmark of the 13 supplied hackathon projects and ProofMind differentiation |
+| [`06-ai-provider-and-budget`](./06-ai-provider-and-budget/) | Mock/Groq/OpenAI provider strategy and strict $30 budget optimization |
 
-### Project Repository
+## Important links
 
-- **ProofMind repository:** https://github.com/c-sidd/creditcoin-attestcoin-lab
-- **ProofMind project directory:** https://github.com/c-sidd/creditcoin-attestcoin-lab/tree/main/projects/proofmind
+### Official
 
----
+- BUIDL CTC 2026 Fall: https://buidl.creditcoin.org/
+- Kickoff AMA: https://www.youtube.com/watch?v=HPL6LjTqQm4
+- Attestcoin: https://attestcoin.org/
+- Creditcoin documentation: https://docs.creditcoin.org/
+- Creditcoin source: https://github.com/gluwa/creditcoin
+- USC Query Builder: https://github.com/gluwa/cc-next-query-builder
+- USC Testnet examples: https://github.com/gluwa/usc-testnet-bridge-examples
 
-## 1. System Architecture
+### ProofMind
 
-ProofMind consists of four primary components:
-1. **Smart Contracts (`/contracts`)**: Solidity smart contracts implementing signal emitters, Merkle/continuity precompile verification (ASC), and credit limit policy decisions.
-2. **Off-Chain Worker (`/worker`)**: A TypeScript daemon that polls for signals, waits for block attestation, fetches readability proofs from the Proof Builder, and submits them to the ASC.
-3. **Backend API (`/backend`)**: An Express server encapsulating input validation, provider-agnostic AI adapters (OpenAI / Groq), and deterministic risk policy controls.
-4. **Operator Dashboard (`/dashboard`)**: A React/Vite web application providing real-time evidence inspection, visual Merkle path inspection, wallet signing simulation, and trigger actions.
+- Repository: https://github.com/c-sidd/creditcoin-attestcoin-lab
+- Project: https://github.com/c-sidd/creditcoin-attestcoin-lab/tree/main/projects/proofmind
 
----
+### Benchmark projects
 
-## 2. Master Document Index
-
-Detailed spec sheets, guides, and reports are located across the repository:
-
-- **BUIDL CTC YouTube / Judge Analysis**: See [youtube-analysis/README.md](./youtube-analysis/README.md) for the official kickoff AMA analysis, judging pillars, Attestcoin requirements, submission requirements, track strategy, judge evidence matrix, demo strategy, and final checklist.
-- **Deployment Details**: See [DEPLOYMENT_MANIFEST.md](./DEPLOYMENT_MANIFEST.md) for network parameters, deployment transaction hashes, and constructor details.
-- **E2E Simulation & Pitch**: See [DEMO_GUIDE.md](./DEMO_GUIDE.md) for the 3-5 minute presentation script and steps for running the simulated demo.
-- **Off-chain Worker Specification**: See [worker/README.md](./worker/README.md) for daemon lifecycles, configuration environments, and persistent states.
-- **AI Decision Pipeline & Schemas**: See [backend/src/ai/README.md](./backend/src/ai/README.md) for input/output JSON schemas and risk controls.
-- **Gas & Cost Analysis**: See [../../docs/gas-analysis.md](../../docs/gas-analysis.md) for local gas measurements of smart contract invocations.
-- **Security Audit Report**: See [../../docs/security-audit.md](../../docs/security-audit.md) for threat models, access controls, and severity classifications.
+- Web3 Analysis Dashboard: https://github.com/Faathirazukhruf/Web3-Analysis-Dashboard
+- Spark: https://github.com/thesithunyein/spark
+- AttestDesk: https://github.com/Qidianyan/attestdesk
+- BountyOps Verified Execution: https://github.com/MathieuDWeill/bountyops-verified-execution
+- AttestGuard: https://github.com/rudimentall1/AttestGuard
+- BorrowIQ: https://github.com/Clean-earthw/borrowiq
+- VeriSettle: https://github.com/anhquan075/verisettle
+- index41: https://github.com/edycutjong/index41
+- Oracle-Free Council: https://github.com/icohangar-ops/oracle-free-council
+- CrossCredit: https://github.com/OoJae/crosscredit
+- MoonCreditFi: https://github.com/Zakariasisu5/Mooncreditfi
+- ProofYield: https://github.com/darkty0x/proofyield
+- SnakeAI: https://github.com/snake-ai-agent/SnakeAI
 
 ---
 
-## 3. Quick Start (Simulated Mode)
+# 🧠 AI is optional by design
 
-To run the entire system in simulated mock mode locally (no EVM nodes or LLM API keys required):
+The project must work without an LLM key.
+
+```text
+                 Underwriter interface
+                         │
+             ┌───────────┼───────────┐
+             │           │           │
+           Mock         Groq       OpenAI
+          default     development  optional
+          $0            low-cost    capped
+```
+
+- **Mock**: tests, CI, deterministic demos, offline development.
+- **Groq**: default real-model development path.
+- **OpenAI**: optional adapter for final quality/demo work only.
+
+No AI provider is allowed to bypass deterministic policy enforcement.
+
+---
+
+# 🏗️ System components
+
+1. **Contracts (`/contracts`)** — source signal/evidence contracts and Creditcoin-side verification/policy logic.
+2. **Worker (`/worker`)** — source-event polling, attestation waiting, proof retrieval, proof submission and persistence.
+3. **Backend (`/backend`)** — evidence normalization, AI provider adapters, schema validation and policy preparation.
+4. **Dashboard (`/dashboard`)** — evidence inspection, decision display, execution state and demo controls.
+
+---
+
+# 🧪 Development modes
+
+## Deterministic local mode
+
+No blockchain keys or AI keys required for core tests.
 
 ```bash
-# 1. Install workspace dependencies
 cd projects/proofmind
 npm install
-
-# 2. Build all workspaces
 npm run build
-
-# 3. Start the Backend API (runs on port 3001)
-cd backend && npm start
-
-# 4. Start the Dashboard (runs on port 5173)
-cd ../dashboard && npm run dev
+npm run test
 ```
+
+## Live testnet mode
+
+The final target is:
+
+```text
+Ethereum Sepolia
+      ↓
+source event
+      ↓
+Attestcoin attestation
+      ↓
+Proof Builder
+      ↓
+Creditcoin CC3 verifier
+      ↓
+ProofMind policy
+      ↓
+financial execution / rejection
+```
+
+Live deployment addresses and transaction hashes must be recorded only after they are actually verified.
 
 ---
 
-## 4. Test Suite Execution
+# 🔐 Security principle
 
-ProofMind is backed by a 100% passing test matrix (83 total assertions) covering all boundaries:
+The most important negative test is:
 
-```bash
-cd projects/proofmind
-npm run test
+```text
+AI: "Approve $40,000"
+
+Verified policy maximum: $10,000
+
+→ Creditcoin contract rejects the action.
+→ No financial state changes.
 ```
-This runs:
-- Smart contract unit & E2E integration tests in Hardhat.
-- Worker event polling, block waiting, proof validation, and submission tests.
-- Backend API endpoints, input validators, AI risk limits, and intent serialization tests.
+
+Other required negative paths include tampered proof, wrong source chain, wrong source contract, failed source receipt, replayed evidence and malformed AI output.
+
+---
+
+# 🚫 Current scope exclusions
+
+For the hackathon MVP, do not spend engineering time on:
+
+- cross-chain writability unless it becomes necessary;
+- DePIN or gaming features;
+- a generic AI chatbot;
+- unrestricted autonomous trading;
+- a production legal invoice marketplace;
+- multiple expensive LLM providers;
+- legacy USC/STARK prover architecture;
+- duplicated research documentation.
+
+---
+
+# 📦 Documentation / deployment
+
+- [`DEMO_GUIDE.md`](./DEMO_GUIDE.md) — demo sequence.
+- [`DEPLOYMENT_RUNBOOK.md`](./DEPLOYMENT_RUNBOOK.md) — deployment procedure.
+- [`DEPLOYMENT_MANIFEST.md`](./DEPLOYMENT_MANIFEST.md) — real deployment evidence; do not populate placeholders as if they were live.
+- [`FINAL_COMPLETION_REPORT.md`](./FINAL_COMPLETION_REPORT.md) — historical completion record; update it only when the corresponding claims are verified.
+
+---
+
+# 🏆 Target judge story
+
+> **Real-world financial evidence is difficult to verify, AI decisions are probabilistic, and on-chain money movement must be deterministic. ProofMind connects these layers: Attestcoin proves the evidence, AI evaluates it, and Creditcoin policy contracts enforce what can actually happen.**
