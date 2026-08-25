@@ -6,6 +6,15 @@ ProofMind is a state-of-the-art autonomous credit risk and decision execution pl
 
 ## 🔗 Important Links
 
+### Hackathon / Judge Strategy
+
+- **BUIDL CTC 2026 Fall — YouTube & Judge Analysis:** [youtube-analysis/README.md](./youtube-analysis/README.md)
+- **Official BUIDL CTC:** https://buidl.creditcoin.org/
+- **Official kickoff AMA:** https://www.youtube.com/watch?v=HPL6LjTqQm4
+- **DoraHacks submission:** https://dorahacks.io/hackathon/buidl-ctc-2026-fall/buidl
+- **Attestcoin:** https://attestcoin.org/
+- **Creditcoin documentation:** https://docs.creditcoin.org/
+
 ### Benchmark / Reference Projects Analysed
 
 | Project | Repository |
@@ -45,6 +54,7 @@ ProofMind consists of four primary components:
 
 Detailed spec sheets, guides, and reports are located across the repository:
 
+- **BUIDL CTC YouTube / Judge Analysis**: See [youtube-analysis/README.md](./youtube-analysis/README.md) for the official kickoff AMA analysis, judging pillars, Attestcoin requirements, submission requirements, track strategy, judge evidence matrix, demo strategy, and final checklist.
 - **Deployment Details**: See [DEPLOYMENT_MANIFEST.md](./DEPLOYMENT_MANIFEST.md) for network parameters, deployment transaction hashes, and constructor details.
 - **E2E Simulation & Pitch**: See [DEMO_GUIDE.md](./DEMO_GUIDE.md) for the 3-5 minute presentation script and steps for running the simulated demo.
 - **Off-chain Worker Specification**: See [worker/README.md](./worker/README.md) for daemon lifecycles, configuration environments, and persistent states.
