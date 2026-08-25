@@ -5,7 +5,9 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
-    "clean": "npx hardhat clean"
+    "clean": "npx hardhat clean",
+    "deploy:source": "npx hardhat run ../../scripts/deploy/deploy-source.js --network sepolia",
+    "deploy:creditcoin": "npx hardhat run ../../scripts/deploy/deploy-creditcoin.js --network creditcoin"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
