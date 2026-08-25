@@ -4,6 +4,33 @@ ProofMind is a state-of-the-art autonomous credit risk and decision execution pl
 
 ---
 
+## 🔗 Important Links
+
+### Benchmark / Reference Projects Analysed
+
+| Project | Repository |
+|---|---|
+| Web3 Analysis Dashboard | https://github.com/Faathirazukhruf/Web3-Analysis-Dashboard |
+| Spark | https://github.com/thesithunyein/spark |
+| AttestDesk | https://github.com/Qidianyan/attestdesk |
+| BountyOps Verified Execution | https://github.com/MathieuDWeill/bountyops-verified-execution |
+| AttestGuard | https://github.com/rudimentall1/AttestGuard |
+| BorrowIQ | https://github.com/Clean-earthw/borrowiq |
+| VeriSettle | https://github.com/anhquan075/verisettle |
+| index41 | https://github.com/edycutjong/index41 |
+| Oracle-Free Council | https://github.com/icohangar-ops/oracle-free-council |
+| CrossCredit | https://github.com/OoJae/crosscredit |
+| MoonCreditFi | https://github.com/Zakariasisu5/Mooncreditfi |
+| ProofYield | https://github.com/darkty0x/proofyield |
+| SnakeAI | https://github.com/snake-ai-agent/SnakeAI |
+
+### Project Repository
+
+- **ProofMind repository:** https://github.com/c-sidd/creditcoin-attestcoin-lab
+- **ProofMind project directory:** https://github.com/c-sidd/creditcoin-attestcoin-lab/tree/main/projects/proofmind
+
+---
+
 ## 1. System Architecture
 
 ProofMind consists of four primary components:
@@ -18,12 +45,12 @@ ProofMind consists of four primary components:
 
 Detailed spec sheets, guides, and reports are located across the repository:
 
-- **Deployment Details**: See [DEPLOYMENT_MANIFEST.md](file:///d:/korea/creditcoin-attestcoin-lab/projects/proofmind/DEPLOYMENT_MANIFEST.md) for network parameters, deployment transaction hashes, and constructor details.
-- **E2E Simulation & Pitch**: See [DEMO_GUIDE.md](file:///d:/korea/creditcoin-attestcoin-lab/projects/proofmind/DEMO_GUIDE.md) for the 3-5 minute presentation script and steps for running the simulated demo.
-- **Off-chain Worker Specification**: See [worker/README.md](file:///d:/korea/creditcoin-attestcoin-lab/projects/proofmind/worker/README.md) for daemon lifecycles, configuration environments, and persistent states.
-- **AI Decision Pipeline & Schemas**: See [backend/src/ai/README.md](file:///d:/korea/creditcoin-attestcoin-lab/projects/proofmind/backend/src/ai/README.md) for input/output JSON schemas and risk controls.
-- **Gas & Cost Analysis**: See [docs/gas-analysis.md](file:///d:/korea/creditcoin-attestcoin-lab/docs/gas-analysis.md) for local gas measurements of smart contract invocations.
-- **Security Audit Report**: See [docs/security-audit.md](file:///d:/korea/creditcoin-attestcoin-lab/docs/security-audit.md) for threat models, access controls, and severity classifications.
+- **Deployment Details**: See [DEPLOYMENT_MANIFEST.md](./DEPLOYMENT_MANIFEST.md) for network parameters, deployment transaction hashes, and constructor details.
+- **E2E Simulation & Pitch**: See [DEMO_GUIDE.md](./DEMO_GUIDE.md) for the 3-5 minute presentation script and steps for running the simulated demo.
+- **Off-chain Worker Specification**: See [worker/README.md](./worker/README.md) for daemon lifecycles, configuration environments, and persistent states.
+- **AI Decision Pipeline & Schemas**: See [backend/src/ai/README.md](./backend/src/ai/README.md) for input/output JSON schemas and risk controls.
+- **Gas & Cost Analysis**: See [../../docs/gas-analysis.md](../../docs/gas-analysis.md) for local gas measurements of smart contract invocations.
+- **Security Audit Report**: See [../../docs/security-audit.md](../../docs/security-audit.md) for threat models, access controls, and severity classifications.
 
 ---
 
